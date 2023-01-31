@@ -6,13 +6,16 @@ import './DirectionPad.css'
 
 function DirectionPad(props) {
 
-  let t = Math.PI / 32 * props.speed;
+  let t = Math.PI / 32 * props.speed / props.scale;
+  let t3 = Math.PI / 32 * props.speed;
   let ct = Math.cos(t);
   let st = Math.sin(t);
+  let ct3 = Math.cos(t3);
+  let st3 = Math.sin(t3);
 
   let rot1 = [[1, 0, 0, 1,], [0, ct, - st, 0,], [0, st, ct, 0,], [0, 0, 0, 1,],]
   let rot2 = [[ct, 0, st, 0,], [0, 1, 0, 0,], [- st, 0, ct, 0,], [0, 0, 0, 1,],]
-  let rot3 = [[ct, - st, 0, 0,], [st, ct, 0, 0,], [0, 0, 1, 0,], [0, 0, 0, 1,],]
+  let rot3 = [[ct3, - st3, 0, 0,], [st3, ct3, 0, 0,], [0, 0, 1, 0,], [0, 0, 0, 1,],]
   let iRot1 = transpose4(rot1);
   let iRot2 = transpose4(rot2);
   let iRot3 = transpose4(rot3);

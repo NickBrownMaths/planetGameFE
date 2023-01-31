@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generatePlanet, whatCellAmILookingAt } from './planetCreation.js'
+import { generatePlanet, naturalColours } from './planetCreation.js'
 
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
@@ -19,18 +19,33 @@ function App() {
   const [lookingAt, setLookingAt] = useState(0);
 
   const [planet, setPlanet] = useState([[0], [0]]);
+  const [planetColours, setPlanetColours] = useState([0, 0]);
+  const [planetVertices, setPlanetVertices] = useState([0, 0]);
+  const [planetNeighbours, setPlanetNeighbours] = useState([0, 0]);
+  const [planetBiomes, setPlanetBiomes] = useState([0, 0]);
+  const [planetElevation, setPlanetElevation] = useState([0, 0]);
+
   const [displayBiome, setDisplayBiome] = useState('');
-  const [reticlevertexdata, setReticlevertexdata] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0,]);
-  const [reticlecolourdata, setReticlecolourdata] = useState([1, 0, 0, 1, 0, 0, 1, 0, 0,]);
+  const [displayElevation, setDisplayElevation] = useState(0);
+
+  const [reticleVertexData, setReticleVertexData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0,]);
+  const [reticleColourData, setReticleVolourData] = useState([1, 0, 0, 1, 0, 0, 1, 0, 0,]);
 
   useEffect(() => {
     setPlanet(generatePlanet(planetSeed, 100));
   }, [planetSeed]);
 
-  let planetVertices = planet[0];
-  let planetColours = planet[1];
-  let planetNeighbours = planet[2];
-  let planetBiomes = planet[3];
+  useEffect(() => {
+    if (planet[2]) {
+      if (planet[2].length > 0) {
+        setPlanetColours(naturalColours(planet[2], planetSeed));
+        setPlanetVertices(planet[0]);
+        setPlanetNeighbours(planet[1]);
+        setPlanetBiomes(planet[2]);
+        setPlanetElevation(planet[3]);
+      }
+    }
+  }, [planet]);
 
   // Here is where you are generating the red reticle triangle - try to add this as an additional triangle instead of additional canvas
   useEffect(() => {
@@ -38,16 +53,17 @@ function App() {
     if (planetVertices) {
       if (planetVertices.length >= 9 * lookingAt + 9) {
         for (let i = 0; i < 3; i++) {
-          reticleVertices[3 * i + 0] = planetVertices[lookingAt * 9 + 3 * i + 0] ;
-          reticleVertices[3 * i + 1] = planetVertices[lookingAt * 9 + 3 * i + 1] ;
-          reticleVertices[3 * i + 2] = planetVertices[lookingAt * 9 + 3 * i + 2] ;
+          reticleVertices[3 * i + 0] = planetVertices[lookingAt * 9 + 3 * i + 0];
+          reticleVertices[3 * i + 1] = planetVertices[lookingAt * 9 + 3 * i + 1];
+          reticleVertices[3 * i + 2] = planetVertices[lookingAt * 9 + 3 * i + 2];
         }
       }
-      setReticlevertexdata(reticleVertices);
+      setReticleVertexData(reticleVertices);
     }
     if (planetBiomes) {
       if (planetBiomes.length > lookingAt) {
         setDisplayBiome(planetBiomes[lookingAt]);
+        setDisplayElevation(planetElevation[lookingAt])
       }
     }
   }, [transformMatrix]);
@@ -63,8 +79,9 @@ function App() {
         vertexdata={planetVertices}
         colourdata={planetColours}
         displayBiome={displayBiome}
-        reticlevertexdata={reticlevertexdata}
-        reticlecolourdata={reticlecolourdata}
+        displayElevation={displayElevation}
+        reticlevertexdata={reticleVertexData}
+        reticlecolourdata={reticleColourData}
       />
       <ControlBar
         planetSeed={planetSeed}
