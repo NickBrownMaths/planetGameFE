@@ -368,6 +368,7 @@ export function generatePlanet(seed, n) {
     }
   }
 
+  // Continents oceans and coastline
   let globalBiome = [];
   // Set biome band
   for (let i = 0; i < globalNbrs.length; i++) {
@@ -384,7 +385,6 @@ export function generatePlanet(seed, n) {
     else                   /*950-1e3*/ { biome = 'polar' }
     globalBiome.push(biome);
   }
-
   //Draw some Oceans
   let oceanFraction = 0;
   while (oceanFraction < 0.7) {
@@ -397,7 +397,6 @@ export function generatePlanet(seed, n) {
     }
     oceanFraction = oceanCntr / (n * n * 20);
   }
-
   // Mark out isolated islands and coast
   let globalOnshoreDistance = new Array(globalNbrs.length).fill(0);
   let onshoreCalcQueue = [];
@@ -456,8 +455,10 @@ export function generatePlanet(seed, n) {
     else { landCells.push(i); }
 
     if (globalBiome[i] === 'cliff'
+      || globalBiome[i] === 'polar'
       || globalBiome[i] === 'tropical cliff'
       || globalBiome[i] === 'mangrove'
+      || globalBiome[i] === 'cold beach'
       || globalBiome[i] === 'beach'
       || globalBiome[i] === 'tropical beach'
       || globalBiome[i] === 'fjord'
@@ -469,14 +470,16 @@ export function generatePlanet(seed, n) {
       }
     }
   }
+
   // generate some elevation
   let globalElevation = new Array(globalNbrs.length).fill(0);
-  let numRanges = 2 * Math.floor(Math.sqrt(n));
-  let wibblyness = 0.12;
+  // Mountain ranges
+  let numRanges = 5 * Math.floor(Math.sqrt(n));
+  let wibblyness = 0.1;
   let steepness = 0.7;
-  for (let i = 0; i < numRanges; i++) {
-    let rangeStart = landCells[Math.floor(RNGen.random() * (landCells.length - 1))];
-    let rangeEnd = landCells[Math.floor(RNGen.random() * (landCells.length - 1))];
+  while (numRanges > 0) {
+    let rangeStart = landCells[Math.floor(RNGen.random() * landCells.length)];
+    let rangeEnd = landCells[Math.floor(RNGen.random() * landCells.length)];
     let rangeLength = Math.sqrt(
       ((
         interpvertices[9 * rangeStart + 0] - interpvertices[9 * rangeEnd + 0] +
@@ -492,56 +495,98 @@ export function generatePlanet(seed, n) {
         interpvertices[9 * rangeStart + 8] - interpvertices[9 * rangeEnd + 8]) / 3) ** 2
     )
 
-    let currentCell = rangeStart;
-    let baseElevation = Math.floor(RNGen.random() * 10) + 1;
-    let currentCellDistToEnd = rangeLength;
-    while (currentCell != rangeEnd) {
-      let peakElevation = baseElevation + Math.floor(RNGen.random() * 11);
-      let elevation = peakElevation;
-      let elevationCalcQueue = [currentCell];
-      while (elevation > 0) {
-        let currentElevQueue = elevationCalcQueue.shift();
-        if (elevation > globalElevation[currentElevQueue]) {
-          globalElevation[currentElevQueue] = elevation;
-          if (elevation > 10 && globalBiome[currentElevQueue] !== 'ocean' && globalBiome[currentElevQueue] != 'shallows') { riverSourceCells.push(currentElevQueue); }
-          for (let j = 0; j < globalNbrs[currentElevQueue].length; j++) {
-            elevationCalcQueue.push(globalNbrs[currentElevQueue][j]);
+    if (rangeLength < 0.4) {
+      numRanges--;
+      let currentCell = rangeStart;
+      let baseElevation = Math.floor(RNGen.random() * 10) + 1;
+      let currentCellDistToEnd = rangeLength;
+      while (currentCell != rangeEnd) {
+        let peakElevation = baseElevation + Math.floor(RNGen.random() * 11);
+        let elevation = peakElevation;
+        let elevationCalcQueue = [currentCell];
+        while (elevation > 0) {
+          let currentElevQueue = elevationCalcQueue.shift();
+          if (elevation > globalElevation[currentElevQueue]) {
+            globalElevation[currentElevQueue] = elevation;
+            if (elevation > 10 && globalBiome[currentElevQueue] !== 'ocean' && globalBiome[currentElevQueue] != 'shallows') { riverSourceCells.push(currentElevQueue); }
+            for (let j = 0; j < globalNbrs[currentElevQueue].length; j++) {
+              elevationCalcQueue.push(globalNbrs[currentElevQueue][j]);
+            }
           }
-        }
-        elevation--;
-        if (RNGen.random < steepness) { elevation--; }
-      }
-
-      let nextCell = currentCell;
-      for (let j = 0; j < globalNbrs[currentCell].length; j++) {
-
-        let nbrCellDistToEnd = Math.sqrt(
-          ((
-            interpvertices[9 * globalNbrs[currentCell][j] + 0] - interpvertices[9 * rangeEnd + 0] +
-            interpvertices[9 * globalNbrs[currentCell][j] + 3] - interpvertices[9 * rangeEnd + 3] +
-            interpvertices[9 * globalNbrs[currentCell][j] + 6] - interpvertices[9 * rangeEnd + 6]) / 3) ** 2 +
-          ((
-            interpvertices[9 * globalNbrs[currentCell][j] + 1] - interpvertices[9 * rangeEnd + 1] +
-            interpvertices[9 * globalNbrs[currentCell][j] + 4] - interpvertices[9 * rangeEnd + 4] +
-            interpvertices[9 * globalNbrs[currentCell][j] + 7] - interpvertices[9 * rangeEnd + 7]) / 3) ** 2 +
-          ((
-            interpvertices[9 * globalNbrs[currentCell][j] + 2] - interpvertices[9 * rangeEnd + 2] +
-            interpvertices[9 * globalNbrs[currentCell][j] + 5] - interpvertices[9 * rangeEnd + 5] +
-            interpvertices[9 * globalNbrs[currentCell][j] + 8] - interpvertices[9 * rangeEnd + 8]) / 3) ** 2
-        )
-
-        if (nbrCellDistToEnd <= currentCellDistToEnd) {
-          currentCellDistToEnd = nbrCellDistToEnd;
-          nextCell = globalNbrs[currentCell][j];
+          elevation--;
+          if (RNGen.random < steepness) { elevation--; }
         }
 
-        currentCell = nextCell;
-        if (RNGen.random() < wibblyness) {
-          nextCell = globalNbrs[currentCell][Math.floor(RNGen.random() * 3)];
+        let nextCell = currentCell;
+        for (let j = 0; j < globalNbrs[currentCell].length; j++) {
+
+          let nbrCellDistToEnd = Math.sqrt(
+            ((
+              interpvertices[9 * globalNbrs[currentCell][j] + 0] - interpvertices[9 * rangeEnd + 0] +
+              interpvertices[9 * globalNbrs[currentCell][j] + 3] - interpvertices[9 * rangeEnd + 3] +
+              interpvertices[9 * globalNbrs[currentCell][j] + 6] - interpvertices[9 * rangeEnd + 6]) / 3) ** 2 +
+            ((
+              interpvertices[9 * globalNbrs[currentCell][j] + 1] - interpvertices[9 * rangeEnd + 1] +
+              interpvertices[9 * globalNbrs[currentCell][j] + 4] - interpvertices[9 * rangeEnd + 4] +
+              interpvertices[9 * globalNbrs[currentCell][j] + 7] - interpvertices[9 * rangeEnd + 7]) / 3) ** 2 +
+            ((
+              interpvertices[9 * globalNbrs[currentCell][j] + 2] - interpvertices[9 * rangeEnd + 2] +
+              interpvertices[9 * globalNbrs[currentCell][j] + 5] - interpvertices[9 * rangeEnd + 5] +
+              interpvertices[9 * globalNbrs[currentCell][j] + 8] - interpvertices[9 * rangeEnd + 8]) / 3) ** 2
+          )
+
+          if (nbrCellDistToEnd <= currentCellDistToEnd) {
+            currentCellDistToEnd = nbrCellDistToEnd;
+            nextCell = globalNbrs[currentCell][j];
+          }
+
+          currentCell = nextCell;
+          if (RNGen.random() < wibblyness) {
+            nextCell = globalNbrs[currentCell][Math.floor(RNGen.random() * 3)];
+          }
         }
       }
     }
   }
+  // Isolated Mountains
+  let numMtns = Math.floor(n ** 1);
+  for (let i = 0; i < numMtns; i++) {
+    let elevation = 5 + Math.floor(RNGen.random() * 5) + Math.floor(RNGen.random() * 5) + Math.floor(RNGen.random() * 5);
+    let peakCell = landCells[Math.floor(RNGen.random() * landCells.length)]
+    let hillCalcQueue = [peakCell];
+    while (elevation > 0 && globalElevation[peakCell] < 20) {
+      let currentHillCell = hillCalcQueue.shift();
+      if (elevation > globalElevation[currentHillCell]) {
+        globalElevation[currentHillCell] = elevation;
+        if (globalElevation[currentHillCell] === 4) { riverSourceCells.push(currentHillCell); }
+        for (let j = 0; j < globalNbrs[currentHillCell].length; j++) {
+          hillCalcQueue.push(globalNbrs[currentHillCell][j]);
+        }
+      }
+      elevation--;
+      if (RNGen.random < steepness) { elevation--; }
+    }
+  }
+  // Hills
+  let numHills = Math.floor(n ** 2.5);
+  for (let i = 0; i < numHills; i++) {
+    let elevation = Math.floor(RNGen.random() * 5);
+    let peakCell = landCells[Math.floor(RNGen.random() * landCells.length)]
+    let hillCalcQueue = [peakCell];
+    while (elevation > 0 && globalElevation[peakCell] < 5) {
+      let currentHillCell = hillCalcQueue.shift();
+      if (elevation > globalElevation[currentHillCell]) {
+        globalElevation[currentHillCell] = elevation;
+        if (globalElevation[currentHillCell] === 4) { riverSourceCells.push(currentHillCell); }
+        for (let j = 0; j < globalNbrs[currentHillCell].length; j++) {
+          hillCalcQueue.push(globalNbrs[currentHillCell][j]);
+        }
+      }
+      elevation--;
+      if (RNGen.random < steepness) { elevation--; }
+    }
+  }
+
   // recalculate biome based on elevation and onshore distance
   // Onshore
   for (let i = 0; i < globalNbrs.length; i++) {
@@ -564,19 +609,12 @@ export function generatePlanet(seed, n) {
       else if (globalOnshoreDistance[i] > 55) { globalBiome[i] = 'grassland'; }
       else if (globalOnshoreDistance[i] > 50 && rand < 0.8) { globalBiome[i] = 'grassland'; }
     }
-
-    if (globalOnshoreDistance[i] > 10 && globalElevation[i] > 0 && globalElevation[i] < 4) {
-
-      //globalElevation[i] = MAth.floor(RNGen.random() * 4) + 1;
-
-    }
-
   }
 
   // Elevation
   for (let i = 0; i < globalNbrs.length; i++) {
     // cliffs
-    if (globalBiome[i] === 'ocean') { globalElevation[i] = 0; }
+    /* */if (globalBiome[i] === 'ocean') { globalElevation[i] = 0; }
     else if (globalBiome[i] === 'shallows') { globalElevation[i] = 0; }
     else if (globalElevation[i] > 0 && (globalBiome[i] === 'tropical beach' || globalBiome[i] === 'mangrove')) { globalBiome[i] = 'tropical cliff'; }
     else if (globalElevation[i] > 0 && (globalBiome[i] === 'cold beach' || globalBiome[i] === 'salt marsh')) { globalBiome[i] = 'fjord'; }
@@ -610,7 +648,7 @@ export function generatePlanet(seed, n) {
   }
 
   // place some ocean trenches
-  for (let i = 0; i < 2 * Math.floor(Math.sqrt(n)); i++) {
+  for (let i = 0; i < 10 * Math.floor(Math.sqrt(n)); i++) {
     let drunkardStart = Math.floor(RNGen.random() * globalNbrs.length);
     while (globalOnshoreDistance[drunkardStart] != 0) {
       drunkardStart = Math.floor(RNGen.random() * globalNbrs.length);
@@ -618,47 +656,91 @@ export function generatePlanet(seed, n) {
     drunkardsWalk(drunkardStart, globalNbrs, globalBiome, 400, 2, 'trench', 'ocean', 'direction', RNGen);
   }
 
-  // TODO
   // Place some rivers
   let lakeSourceTiles = [];
-  let numRivers = Math.floor(Math.sqrt(n));
+  let lakeTropicalSourceTiles = [];
+  let numRivers = 3 * Math.floor(Math.sqrt(n));
   for (let i = 0; i < numRivers; i++) {
     let currentRiverCell = riverSourceCells[Math.floor(RNGen.random() * riverSourceCells.length)];
     let prevRiverCell;
     let prevCellElevation = 1000;
+    let riverNbrs = 0;
     while (globalBiome[currentRiverCell] != 'shallows' && globalBiome[currentRiverCell] != 'ocean') {
-      if (globalBiome[currentRiverCell] === 'nival' && globalBiome[currentRiverCell] === 'alpine' && globalBiome[currentRiverCell] === 'tundra' && globalBiome[currentRiverCell] === 'polar') { globalBiome[currentRiverCell] = 'glacier'; }
-      else if (interpz[currentRiverCell] > 0.9) {
-        /* */if (globalBiome[currentRiverCell] === 'salt marsh')/*       */ { }
-        else if (globalBiome[currentRiverCell] === 'fjord')/*            */ { globalBiome[currentRiverCell] = 'tidewater glacier' }
-        else if (globalElevation[currentRiverCell] > prevCellElevation)/**/ { globalBiome[currentRiverCell] = 'glacier valley'; }
-        else if (globalBiome[currentRiverCell] === 'cold beach')/*       */ { globalBiome[currentRiverCell] = 'tidewater glacier'; }
-        else /*                                                          */ { globalBiome[currentRiverCell] = 'glacier'; }
-      }
-      else if (interpz[currentRiverCell] > 0.6) {
-        /* */if (globalBiome[currentRiverCell] === 'cliff')/*            */ { globalBiome[currentRiverCell] = 'waterfall' }
-        else if (globalElevation[currentRiverCell] > prevCellElevation)/**/ { globalBiome[currentRiverCell] = 'river valley'; }
-        else if (globalBiome[currentRiverCell] === 'beach')/*            */ { globalBiome[currentRiverCell] = 'delta'; }
-        else /*                                                          */ { globalBiome[currentRiverCell] = 'river'; }
-      }
-      else {
-        /* */if (globalBiome[currentRiverCell] === 'mangrove') /*        */ { }
-        else if (globalBiome[currentRiverCell] === 'tropical cliff')/*   */ { globalBiome[currentRiverCell] = 'tropical waterfall' }
-        else if (globalElevation[currentRiverCell] > prevCellElevation)/**/ { globalBiome[currentRiverCell] = 'tropical river valley'; }
-        else if (globalBiome[currentRiverCell] === 'tropical beach')/*   */ { globalBiome[currentRiverCell] = 'tropical delta'; }
-        else /*                                                          */ { globalBiome[currentRiverCell] = 'tropical river'; }
+      /* */if (globalBiome[currentRiverCell] === 'glacier')/*              */ { globalBiome[currentRiverCell] = 'glacier' }
+      /* */if (globalBiome[currentRiverCell] === 'nival')/*                */ { globalBiome[currentRiverCell] = 'glacier' }
+      else if (globalBiome[currentRiverCell] === 'polar')/*                */ { globalBiome[currentRiverCell] = 'glacier' }
+      else if (globalBiome[currentRiverCell] === 'tundra')/*               */ { globalBiome[currentRiverCell] = 'glacier' }
+      else if (globalBiome[currentRiverCell] === 'alpine')/*               */ { globalBiome[currentRiverCell] = 'glacier' }
+      //else if (globalBiome[currentRiverCell] === 'river')/*                */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'grassland')/*            */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'marsh')/*                */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'bog')/*                  */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'temperate forest')/*     */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'fen')/*                  */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'montane')/*              */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'boreal forest')/*        */ { globalBiome[currentRiverCell] = 'river' }
+      else if (globalBiome[currentRiverCell] === 'temperate rainforest')/* */ { globalBiome[currentRiverCell] = 'river' }
+      //else if (globalBiome[currentRiverCell] === 'tropical river')/*       */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'desert grassland')/*     */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'savanna')/*              */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'chaparral')/*            */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'desert')/*               */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'oasis')/*                */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'encinal')/*              */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'cloud forest')/*         */ { globalBiome[currentRiverCell] = 'tropical river' }
+      else if (globalBiome[currentRiverCell] === 'tropical rainforest')/*  */ { globalBiome[currentRiverCell] = 'tropical river' }
+      //else if (globalBiome[currentRiverCell] === 'river fjord')/*          */ { globalBiome[currentRiverCell] = 'river fjord' }
+      else if (globalBiome[currentRiverCell] === 'fjord')/*                */ { globalBiome[currentRiverCell] = 'river fjord' }
+      //else if (globalBiome[currentRiverCell] === 'delta')/*                */ { globalBiome[currentRiverCell] = 'delta' }
+      else if (globalBiome[currentRiverCell] === 'beach')/*                */ { globalBiome[currentRiverCell] = 'delta' }
+      else if (globalBiome[currentRiverCell] === 'cold beach')/*           */ { globalBiome[currentRiverCell] = 'delta' }
+      //else if (globalBiome[currentRiverCell] === 'tropical delta')/*       */ { globalBiome[currentRiverCell] = 'tropical delta' }
+      else if (globalBiome[currentRiverCell] === 'tropical beach')/*       */ { globalBiome[currentRiverCell] = 'tropical delta' }
+      //else if (globalBiome[currentRiverCell] === 'waterfall')/*            */ { globalBiome[currentRiverCell] = 'waterfall' }
+      else if (globalBiome[currentRiverCell] === 'cliff')/*                */ { globalBiome[currentRiverCell] = 'waterfall' }
+      //else if (globalBiome[currentRiverCell] === 'tropical waterfall')/*   */ { globalBiome[currentRiverCell] = 'tropical waterfall' }
+      else if (globalBiome[currentRiverCell] === 'tropical cliff')/*       */ { globalBiome[currentRiverCell] = 'tropical waterfall' }
+      //else if (globalBiome[currentRiverCell] === 'glacier valley')/*       */ { globalBiome[currentRiverCell] = 'glacier valley' }
+      //else if (globalBiome[currentRiverCell] === 'river valley')/*         */ { globalBiome[currentRiverCell] = 'river valley' }
+      //else if (globalBiome[currentRiverCell] === 'tropical river valley')/**/ { globalBiome[currentRiverCell] = 'tropical river valley' }
+      //else if (globalBiome[currentRiverCell] === 'volcano')/*              */ { globalBiome[currentRiverCell] = 'volcano' }
+      //else if (globalBiome[currentRiverCell] === 'iceberg')/*              */ { globalBiome[currentRiverCell] = 'iceberg' }
+      //else if (globalBiome[currentRiverCell] === 'salt marsh')/*           */ { globalBiome[currentRiverCell] = 'salt marsh' }
+      //else if (globalBiome[currentRiverCell] === 'mangrove')/*             */ { globalBiome[currentRiverCell] = 'mangrove' }
+      //else if (globalBiome[currentRiverCell] === 'tropical islet')/*       */ { globalBiome[currentRiverCell] = 'tropical islet' }
+      //else if (globalBiome[currentRiverCell] === 'swamp')/*                */ { globalBiome[currentRiverCell] = 'swamp' }
+      //else if (globalBiome[currentRiverCell] === 'lake')/*                 */ { globalBiome[currentRiverCell] = 'lake' }
+      //else if (globalBiome[currentRiverCell] === 'tropical lake')/*        */ { globalBiome[currentRiverCell] = 'tropical lake' }
+      //else if (globalBiome[currentRiverCell] === 'shallows')/*             */ { globalBiome[currentRiverCell] = 'shallows' }
+      //else if (globalBiome[currentRiverCell] === 'islet')/*                */ { globalBiome[currentRiverCell] = 'islet' }
+      //else if (globalBiome[currentRiverCell] === 'ocean')/*                */ { globalBiome[currentRiverCell] = 'ocean' }
+      //else if (globalBiome[currentRiverCell] === 'trench')/*               */ { globalBiome[currentRiverCell] = 'trench' }
+      //else if (globalBiome[currentRiverCell] === 'coral')/*                */ { globalBiome[currentRiverCell] = 'coral' }
+
+      if (globalElevation[currentRiverCell] > globalElevation[prevRiverCell]) {
+        /* */if (globalBiome[currentRiverCell] === 'glacier')/*       */ { globalBiome[currentRiverCell] = 'glacier valley' }
+        else if (globalBiome[currentRiverCell] === 'river')/*         */ { globalBiome[currentRiverCell] = 'river valley' }
+        else if (globalBiome[currentRiverCell] === 'tropical river')/**/ { globalBiome[currentRiverCell] = 'tropical river valley' }
       }
 
-      if (globalElevation[currentRiverCell] < 10) { lakeSourceTiles.push(currentRiverCell); }
+      if (globalBiome[currentRiverCell] === 'tropical river' && RNGen.random() < 0.5) {
+        let oasisIdx = Math.floor(RNGen.random() * 3);
+        if (globalBiome[globalNbrs[currentRiverCell][oasisIdx]] === 'desert' || globalBiome[globalNbrs[currentRiverCell][oasisIdx]] === 'desert') {
+          globalBiome[globalNbrs[currentRiverCell][oasisIdx]] = 'oasis';
+        }
+      }
+
+      if (globalElevation[currentRiverCell] < 5 && globalOnshoreDistance[currentRiverCell] > 9) {
+        /* */if (globalBiome[currentRiverCell] === 'river') /*            */ { lakeSourceTiles.push(currentRiverCell); }
+        else if (globalBiome[currentRiverCell] === 'tropical river') { lakeTropicalSourceTiles.push(currentRiverCell); }
+      }
 
       let nextRiverCell = currentRiverCell;
       let lowestElevation = 100;
-      if (globalOnshoreDistance[currentRiverCell] > 10) {
-        for (let j = 0; j < globalNbrs[currentRiverCell].length; j++) {
-          if (globalElevation[globalNbrs[currentRiverCell][j]] < lowestElevation) {
-            lowestElevation = globalElevation[globalNbrs[currentRiverCell][j]];
-            nextRiverCell = globalNbrs[currentRiverCell][j];
-          }
+      for (let j = 0; j < globalNbrs[currentRiverCell].length; j++) {
+        if (globalElevation[globalNbrs[currentRiverCell][j]] < lowestElevation) {
+          lowestElevation = globalElevation[globalNbrs[currentRiverCell][j]];
+          nextRiverCell = globalNbrs[currentRiverCell][j];
         }
       }
       if (nextRiverCell === currentRiverCell || nextRiverCell === prevRiverCell) {
@@ -668,31 +750,46 @@ export function generatePlanet(seed, n) {
             lowestOnshoreDistance = globalOnshoreDistance[globalNbrs[currentRiverCell][j]];
             nextRiverCell = globalNbrs[currentRiverCell][j];
           }
-          if (RNGen.random() < 0.2) {
-            nextRiverCell = globalNbrs[currentRiverCell][Math.floor(RNGen.random() * 3)];
-          }
+
         }
       }
-      if (nextRiverCell === currentRiverCell || nextRiverCell === prevRiverCell) {
-        nextRiverCell = globalNbrs[currentRiverCell][Math.floor(RNGen.random() * globalNbrs[currentRiverCell].length)];
+      if (RNGen.random() < 0.01) {
+        nextRiverCell = globalNbrs[currentRiverCell][Math.floor(RNGen.random() * 3)];
       }
+
       prevRiverCell = currentRiverCell;
       prevCellElevation = globalElevation[prevRiverCell];
       currentRiverCell = nextRiverCell;
     }
-
+  }
+  // Place lakes
+  let numLakes = 4;
+  for (let i = 0; i < numLakes; i++) {
+    let lakeCentre = lakeSourceTiles[Math.floor((RNGen.random() * lakeSourceTiles.length))];
+    let lakeSize = 3 + Math.floor(RNGen.random() * 3);
+    floodFill(lakeCentre, globalNbrs, globalBiome, lakeSize, 'lake', '');
+  }
+  let numTropLakes = 2;
+  for (let i = 0; i < numTropLakes; i++) {
+    let lakeCentre = lakeTropicalSourceTiles[Math.floor((RNGen.random() * lakeTropicalSourceTiles.length))];
+    let lakeSize = 3 + Math.floor(RNGen.random() * 4);
+    floodFill(lakeCentre, globalNbrs, globalBiome, lakeSize, 'tropical lake', '');
+  }
+  for (let i = 0; i < globalBiome.length; i++) {
+    if (globalBiome[i] === 'tropical lake') {
+      for (let j = 0; j < globalNbrs[i].length; j++) {
+        if (globalBiome[globalNbrs[i][j]] === 'desert' || globalBiome[globalNbrs[i][j]] === 'savanna') { globalBiome[globalNbrs[i][j]] = 'oasis'; }
+      }
+    }
   }
 
   /*
    TODO
    Place
-   - Lakes
-   - Lake
-   - Oasis
    - Bog - cold, humid, low nutrient
    - Fen - cold, humid, high nutrient
    - Swamp - Humid, not near rivers
-   - marsh - humid, near rivers
+   - marsh - humid ish, near rivers
   */
 
 
@@ -734,78 +831,169 @@ export function naturalColours(globalBiome, seed) {
   let colours = [];
   for (let i = 0; i < globalBiome.length; i++) {
     let thisColour = [];
-    /* */if (globalBiome[i] === 'nival')/*                */ { thisColour = [1.0, 1.0, 1.0] }
-    else if (globalBiome[i] === 'polar')/*                */ { thisColour = [1.0, 1.0, 1.0] }
-    else if (globalBiome[i] === 'tropical beach')/*       */ { thisColour = [1.0, 1.0, 0.7] }
-    else if (globalBiome[i] === 'tropical islet')/*       */ { thisColour = [1.0, 1.0, 0.7] }
-    else if (globalBiome[i] === 'desert')/*               */ { thisColour = [1.0, 0.9, 0.5] }
-    else if (globalBiome[i] === 'coral')/*                */ { thisColour = [1.0, 0.5, 0.4] }
-    else if (globalBiome[i] === 'volcano')/*              */ { thisColour = [1.0, 0.3, 0.0] }
-    else if (globalBiome[i] === 'glacier')/*              */ { thisColour = [0.9, 1.0, 1.0] }
-    else if (globalBiome[i] === 'glacier valley')/*       */ { thisColour = [0.9, 1.0, 1.0] }
-    else if (globalBiome[i] === 'iceberg')/*              */ { thisColour = [0.9, 1.0, 1.0] }
-    else if (globalBiome[i] === 'tidewater glacier')/*    */ { thisColour = [0.9, 1.0, 1.0] }
+    /* */if (globalBiome[i] === 'polar')/*                */ { thisColour = [1.0, 1.0, 1.0] }
     else if (globalBiome[i] === 'tundra')/*               */ { thisColour = [0.9, 1.0, 0.9] }
-    else if (globalBiome[i] === 'beach')/*                */ { thisColour = [0.9, 0.9, 0.5] }
-    else if (globalBiome[i] === 'cold beach')/*           */ { thisColour = [0.9, 0.9, 0.5] }
-    else if (globalBiome[i] === 'desert grassland')/*     */ { thisColour = [0.8, 0.9, 0.5] }
-    else if (globalBiome[i] === 'grassland')/*            */ { thisColour = [0.8, 0.9, 0.4] }
-    else if (globalBiome[i] === 'chaparral')/*            */ { thisColour = [0.8, 0.9, 0.2] }
-    else if (globalBiome[i] === 'savanna')/*              */ { thisColour = [0.8, 0.8, 0.2] }
-    else if (globalBiome[i] === 'alpine')/*               */ { thisColour = [0.7, 0.6, 0.6] }
-    else if (globalBiome[i] === 'fen')/*                  */ { thisColour = [0.7, 0.6, 0.5] }
-    else if (globalBiome[i] === 'fjord')/*                */ { thisColour = [0.7, 0.5, 0.7] }
-    else if (globalBiome[i] === 'delta')/*                */ { thisColour = [0.7, 0.5, 0.0] }
-    else if (globalBiome[i] === 'tropical delta')/*       */ { thisColour = [0.7, 0.4, 0.0] }
-    else if (globalBiome[i] === 'salt marsh')/*           */ { thisColour = [0.6, 0.7, 0.4] }
-    else if (globalBiome[i] === 'mangrove')/*             */ { thisColour = [0.6, 0.7, 0.0] }
-    else if (globalBiome[i] === 'marsh')/*                */ { thisColour = [0.6, 0.6, 0.5] }
-    else if (globalBiome[i] === 'cliff')/*                */ { thisColour = [0.5, 0.4, 0.4] }
-    else if (globalBiome[i] === 'oasis')/*                */ { thisColour = [0.5, 0.8, 0.0] }
-    else if (globalBiome[i] === 'encinal')/*              */ { thisColour = [0.5, 0.6, 0.0] }
-    else if (globalBiome[i] === 'river')/*                */ { thisColour = [0.4, 0.7, 1.0] }
-    else if (globalBiome[i] === 'river valley')/*         */ { thisColour = [0.4, 0.7, 1.0] }
-    else if (globalBiome[i] === 'waterfall')/*            */ { thisColour = [0.4, 0.7, 1.0] }
-    else if (globalBiome[i] === 'tropical river')/*       */ { thisColour = [0.4, 0.7, 0.5] }
-    else if (globalBiome[i] === 'tropical river valley')/**/ { thisColour = [0.4, 0.7, 0.5] }
-    else if (globalBiome[i] === 'tropical waterfall')/*   */ { thisColour = [0.4, 0.7, 0.5] }
-    else if (globalBiome[i] === 'swamp')/*                */ { thisColour = [0.4, 0.6, 0.3] }
-    else if (globalBiome[i] === 'islet')/*                */ { thisColour = [0.4, 0.6, 0.0] }
-    else if (globalBiome[i] === 'temperate forest')/*     */ { thisColour = [0.4, 0.6, 0.0] }
-    else if (globalBiome[i] === 'temperate rainforest')/* */ { thisColour = [0.3, 0.7, 0.0] }
-    else if (globalBiome[i] === 'lake')/*                 */ { thisColour = [0.3, 0.6, 0.9] }
-    else if (globalBiome[i] === 'bog')/*                  */ { thisColour = [0.3, 0.2, 0.1] }
-    else if (globalBiome[i] === 'montane')/*              */ { thisColour = [0.2, 0.6, 0.3] }
-    else if (globalBiome[i] === 'tropical rainforest')/*  */ { thisColour = [0.2, 0.5, 0.1] }
-    else if (globalBiome[i] === 'tropical cliff')/*       */ { thisColour = [0.1, 0.8, 0.3] }
-    else if (globalBiome[i] === 'cloud forest')/*         */ { thisColour = [0.1, 0.7, 0.3] }
     else if (globalBiome[i] === 'boreal forest')/*        */ { thisColour = [0.1, 0.5, 0.2] }
-    else if (globalBiome[i] === 'shallows')/*             */ { thisColour = [0.0, 0.6, 1.0] }
+    else if (globalBiome[i] === 'temperate forest')/*     */ { thisColour = [0.4, 0.6, 0.0] }
+    else if (globalBiome[i] === 'grassland')/*            */ { thisColour = [0.8, 0.9, 0.4] }
+    else if (globalBiome[i] === 'desert')/*               */ { thisColour = [1.0, 0.9, 0.5] }
+    else if (globalBiome[i] === 'savanna')/*              */ { thisColour = [0.8, 0.8, 0.2] }
+    else if (globalBiome[i] === 'tropical rainforest')/*  */ { thisColour = [0.2, 0.5, 0.1] }
+
+    else if (globalBiome[i] === 'nival')/*                */ { thisColour = [1.0, 1.0, 1.0] }
+    else if (globalBiome[i] === 'alpine')/*               */ { thisColour = [0.7, 0.6, 0.6] }
+    else if (globalBiome[i] === 'montane')/*              */ { thisColour = [0.2, 0.6, 0.3] }
+    else if (globalBiome[i] === 'volcano')/*              */ { thisColour = [1.0, 0.3, 0.0] }
+    else if (globalBiome[i] === 'encinal')/*              */ { thisColour = [0.5, 0.6, 0.0] }
+    else if (globalBiome[i] === 'desert grassland')/*     */ { thisColour = [0.8, 0.9, 0.5] }
+    else if (globalBiome[i] === 'cloud forest')/*         */ { thisColour = [0.1, 0.7, 0.3] }
+
     else if (globalBiome[i] === 'ocean')/*                */ { thisColour = [0.0, 0.4, 1.0] }
+    else if (globalBiome[i] === 'shallows')/*             */ { thisColour = [0.0, 0.6, 1.0] }
     else if (globalBiome[i] === 'trench')/*               */ { thisColour = [0.0, 0.2, 1.0] }
 
+    else if (globalBiome[i] === 'coral')/*                */ { thisColour = [1.0, 0.5, 0.4] }
+    else if (globalBiome[i] === 'tropical islet')/*       */ { thisColour = [1.0, 1.0, 0.7] }
+    else if (globalBiome[i] === 'islet')/*                */ { thisColour = [0.4, 0.6, 0.0] }
+    else if (globalBiome[i] === 'iceberg')/*              */ { thisColour = [0.9, 1.0, 1.0] }
+
+    else if (globalBiome[i] === 'tropical beach')/*       */ { thisColour = [1.0, 1.0, 0.7] }
+    else if (globalBiome[i] === 'beach')/*                */ { thisColour = [0.9, 0.9, 0.5] }
+    else if (globalBiome[i] === 'cold beach')/*           */ { thisColour = [0.9, 0.9, 0.5] }
+    else if (globalBiome[i] === 'tropical cliff')/*       */ { thisColour = [0.1, 0.8, 0.3] }
+    else if (globalBiome[i] === 'cliff')/*                */ { thisColour = [0.5, 0.4, 0.4] }
+    else if (globalBiome[i] === 'fjord')/*                */ { thisColour = [0.7, 0.5, 0.7] }
+
+    else if (globalBiome[i] === 'temperate rainforest')/* */ { thisColour = [0.3, 0.7, 0.0] }
+    else if (globalBiome[i] === 'chaparral')/*            */ { thisColour = [0.8, 0.9, 0.2] }
+    else if (globalBiome[i] === 'salt marsh')/*           */ { thisColour = [0.6, 0.7, 0.4] }
+    else if (globalBiome[i] === 'mangrove')/*             */ { thisColour = [0.6, 0.7, 0.0] }
+
+    else if (globalBiome[i] === 'glacier')/*              */ { thisColour = [0.9, 1.0, 1.0] }
+    else if (globalBiome[i] === 'river')/*                */ { thisColour = [0.4, 0.7, 1.0] }
+    else if (globalBiome[i] === 'tropical river')/*       */ { thisColour = [0.4, 0.7, 0.5] }
+
+    else if (globalBiome[i] === 'river fjord')/*          */ { thisColour = [0.4, 0.5, 0.7] }
+    else if (globalBiome[i] === 'waterfall')/*            */ { thisColour = [0.4, 0.7, 1.0] }
+    else if (globalBiome[i] === 'tropical waterfall')/*   */ { thisColour = [0.4, 0.7, 0.5] }
+    else if (globalBiome[i] === 'glacier valley')/*       */ { thisColour = [0.9, 1.0, 1.0] }
+    else if (globalBiome[i] === 'river valley')/*         */ { thisColour = [0.4, 0.7, 1.0] }
+    else if (globalBiome[i] === 'tropical river valley')/**/ { thisColour = [0.4, 0.7, 0.5] }
+    else if (globalBiome[i] === 'delta')/*                */ { thisColour = [0.7, 0.5, 0.0] }
+    else if (globalBiome[i] === 'tropical delta')/*       */ { thisColour = [0.7, 0.4, 0.0] }
+
+    else if (globalBiome[i] === 'lake')/*                 */ { thisColour = [0.3, 0.6, 0.9] }
+    else if (globalBiome[i] === 'tropical lake')/*        */ { thisColour = [0.3, 0.6, 0.4] }
+
+    else if (globalBiome[i] === 'swamp')/*                */ { thisColour = [0.4, 0.6, 0.3] }
+    else if (globalBiome[i] === 'marsh')/*                */ { thisColour = [0.6, 0.6, 0.5] }
+    else if (globalBiome[i] === 'bog')/*                  */ { thisColour = [0.3, 0.2, 0.1] }
+    else if (globalBiome[i] === 'fen')/*                  */ { thisColour = [0.7, 0.6, 0.5] }
+    else if (globalBiome[i] === 'oasis')/*                */ { thisColour = [0.5, 0.8, 0.0] }
+
     if (RNGen.random() < 0.3) {
-      let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 15;
+      let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 10;
       thisColour[0] = thisColour[0] + clrChange;
     }
     if (RNGen.random() < 0.3) {
-      let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 15;
+      let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 10;
       thisColour[1] = thisColour[1] + clrChange;
     }
     if (RNGen.random() < 0.3) {
-      let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 15;
+      let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 10;
       thisColour[2] = thisColour[2] + clrChange;
     }
 
-    // To view inland distance
-    //thisColour = [0,  globalOnshoreDistance[i] / 100, 0.7];
+    colours.push(...thisColour);
+    colours.push(...thisColour);
+    colours.push(...thisColour);
+  }
+  return colours;
+}
 
-    // To view Humidity
-    // To view temperature
-    // To view altitude
+export function biomeColours(globalBiome) {
+  let colours = [];
+  for (let i = 0; i < globalBiome.length; i++) {
+    let thisColour = [];
+    /* */if (globalBiome[i] === 'polar')/*                */ { thisColour = [1.0, 1.0, 1.0] }
+    else if (globalBiome[i] === 'tundra')/*               */ { thisColour = [0.9, 1.0, 0.9] }
+    else if (globalBiome[i] === 'boreal forest')/*        */ { thisColour = [0.1, 0.5, 0.2] }
+    else if (globalBiome[i] === 'temperate forest')/*     */ { thisColour = [0.4, 0.6, 0.0] }
+    else if (globalBiome[i] === 'grassland')/*            */ { thisColour = [0.8, 0.9, 0.4] }
+    else if (globalBiome[i] === 'desert')/*               */ { thisColour = [1.0, 0.9, 0.5] }
+    else if (globalBiome[i] === 'savanna')/*              */ { thisColour = [0.8, 0.8, 0.2] }
+    else if (globalBiome[i] === 'tropical rainforest')/*  */ { thisColour = [0.2, 0.5, 0.1] }
 
-    //thisColour = [0.5, globalElevation[i]/20, 0.3];
+    else if (globalBiome[i] === 'nival')/*                */ { thisColour = [1.0, 1.0, 1.0] }
+    else if (globalBiome[i] === 'alpine')/*               */ { thisColour = [0.7, 0.6, 0.6] }
+    else if (globalBiome[i] === 'montane')/*              */ { thisColour = [0.2, 0.6, 0.3] }
+    else if (globalBiome[i] === 'volcano')/*              */ { thisColour = [1.0, 0.3, 0.0] }
+    else if (globalBiome[i] === 'encinal')/*              */ { thisColour = [0.5, 0.6, 0.0] }
+    else if (globalBiome[i] === 'desert grassland')/*     */ { thisColour = [0.8, 0.9, 0.5] }
+    else if (globalBiome[i] === 'cloud forest')/*         */ { thisColour = [0.1, 0.7, 0.3] }
 
+    else if (globalBiome[i] === 'ocean')/*                */ { thisColour = [0.0, 0.4, 1.0] }
+    else if (globalBiome[i] === 'shallows')/*             */ { thisColour = [0.0, 0.6, 1.0] }
+    else if (globalBiome[i] === 'trench')/*               */ { thisColour = [0.0, 0.2, 1.0] }
+
+    else if (globalBiome[i] === 'coral')/*                */ { thisColour = [1.0, 0.5, 0.4] }
+    else if (globalBiome[i] === 'tropical islet')/*       */ { thisColour = [1.0, 1.0, 0.7] }
+    else if (globalBiome[i] === 'islet')/*                */ { thisColour = [0.4, 0.6, 0.0] }
+    else if (globalBiome[i] === 'iceberg')/*              */ { thisColour = [0.9, 1.0, 1.0] }
+
+    else if (globalBiome[i] === 'tropical beach')/*       */ { thisColour = [1.0, 1.0, 0.7] }
+    else if (globalBiome[i] === 'beach')/*                */ { thisColour = [0.9, 0.9, 0.5] }
+    else if (globalBiome[i] === 'cold beach')/*           */ { thisColour = [0.9, 0.9, 0.5] }
+    else if (globalBiome[i] === 'tropical cliff')/*       */ { thisColour = [0.1, 0.8, 0.3] }
+    else if (globalBiome[i] === 'cliff')/*                */ { thisColour = [0.5, 0.4, 0.4] }
+    else if (globalBiome[i] === 'fjord')/*                */ { thisColour = [0.7, 0.5, 0.7] }
+
+    else if (globalBiome[i] === 'temperate rainforest')/* */ { thisColour = [0.3, 0.7, 0.0] }
+    else if (globalBiome[i] === 'chaparral')/*            */ { thisColour = [0.8, 0.9, 0.2] }
+    else if (globalBiome[i] === 'salt marsh')/*           */ { thisColour = [0.6, 0.7, 0.4] }
+    else if (globalBiome[i] === 'mangrove')/*             */ { thisColour = [0.6, 0.7, 0.0] }
+
+    else if (globalBiome[i] === 'glacier')/*              */ { thisColour = [0.9, 1.0, 1.0] }
+    else if (globalBiome[i] === 'river')/*                */ { thisColour = [0.4, 0.7, 1.0] }
+    else if (globalBiome[i] === 'tropical river')/*       */ { thisColour = [0.4, 0.7, 0.5] }
+
+    else if (globalBiome[i] === 'river fjord')/*          */ { thisColour = [0.4, 0.5, 0.7] }
+    else if (globalBiome[i] === 'waterfall')/*            */ { thisColour = [0.4, 0.7, 1.0] }
+    else if (globalBiome[i] === 'tropical waterfall')/*   */ { thisColour = [0.4, 0.7, 0.5] }
+    else if (globalBiome[i] === 'glacier valley')/*       */ { thisColour = [0.9, 1.0, 1.0] }
+    else if (globalBiome[i] === 'river valley')/*         */ { thisColour = [0.4, 0.7, 1.0] }
+    else if (globalBiome[i] === 'tropical river valley')/**/ { thisColour = [0.4, 0.7, 0.5] }
+    else if (globalBiome[i] === 'delta')/*                */ { thisColour = [0.7, 0.5, 0.0] }
+    else if (globalBiome[i] === 'tropical delta')/*       */ { thisColour = [0.7, 0.4, 0.0] }
+
+    else if (globalBiome[i] === 'lake')/*                 */ { thisColour = [0.3, 0.6, 0.9] }
+    else if (globalBiome[i] === 'tropical lake')/*        */ { thisColour = [0.3, 0.6, 0.4] }
+
+    else if (globalBiome[i] === 'swamp')/*                */ { thisColour = [0.4, 0.6, 0.3] }
+    else if (globalBiome[i] === 'marsh')/*                */ { thisColour = [0.6, 0.6, 0.5] }
+    else if (globalBiome[i] === 'bog')/*                  */ { thisColour = [0.3, 0.2, 0.1] }
+    else if (globalBiome[i] === 'fen')/*                  */ { thisColour = [0.7, 0.6, 0.5] }
+    else if (globalBiome[i] === 'oasis')/*                */ { thisColour = [0.5, 0.8, 0.0] }
+
+    colours.push(...thisColour);
+    colours.push(...thisColour);
+    colours.push(...thisColour);
+  }
+  return colours;
+}
+
+export function elevationColours(globalElevation) {
+  // To view inland distance
+  //thisColour = [0,  globalOnshoreDistance[i] / 100, 0.7];
+
+  // To view Humidity
+  // To view temperature
+  // To view altitude
+
+  let colours = [];
+
+  for (let i = 0; i < globalElevation.length; i++) {
+    let thisColour = [0.5, globalElevation[i] / 20, 0.3];
 
     colours.push(...thisColour);
     colours.push(...thisColour);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generatePlanet, naturalColours } from './planetCreation.js'
+import { elevationColours, generatePlanet, naturalColours } from './planetCreation.js'
 
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
@@ -39,6 +39,7 @@ function App() {
     if (planet[2]) {
       if (planet[2].length > 0) {
         setPlanetColours(naturalColours(planet[2], planetSeed));
+        //setPlanetColours(elevationColours(planet[3])) ;
         setPlanetVertices(planet[0]);
         setPlanetNeighbours(planet[1]);
         setPlanetBiomes(planet[2]);
