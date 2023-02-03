@@ -474,7 +474,7 @@ export function generatePlanet(seed, n) {
   // generate some elevation
   let globalElevation = new Array(globalNbrs.length).fill(0);
   // Mountain ranges
-  let numRanges = 5 * Math.floor(Math.sqrt(n));
+  let numRanges = 3 * Math.floor(Math.sqrt(n));
   let wibblyness = 0.1;
   let steepness = 0.7;
   while (numRanges > 0) {
@@ -551,39 +551,43 @@ export function generatePlanet(seed, n) {
   // Isolated Mountains
   let numMtns = Math.floor(n ** 1);
   for (let i = 0; i < numMtns; i++) {
-    let elevation = 5 + Math.floor(RNGen.random() * 5) + Math.floor(RNGen.random() * 5) + Math.floor(RNGen.random() * 5);
-    let peakCell = landCells[Math.floor(RNGen.random() * landCells.length)]
-    let hillCalcQueue = [peakCell];
-    while (elevation > 0 && globalElevation[peakCell] < 20) {
-      let currentHillCell = hillCalcQueue.shift();
-      if (elevation > globalElevation[currentHillCell]) {
-        globalElevation[currentHillCell] = elevation;
-        if (globalElevation[currentHillCell] === 4) { riverSourceCells.push(currentHillCell); }
-        for (let j = 0; j < globalNbrs[currentHillCell].length; j++) {
-          hillCalcQueue.push(globalNbrs[currentHillCell][j]);
+    let peakCell = landCells[Math.floor(RNGen.random() * landCells.length)];
+    if (globalOnshoreDistance[peakCell] > 5) {
+      let elevation = 5 + Math.floor(RNGen.random() * 5) + Math.floor(RNGen.random() * 5) + Math.floor(RNGen.random() * 5);
+      let hillCalcQueue = [peakCell];
+      while (elevation > 0 && globalElevation[peakCell] < 20) {
+        let currentHillCell = hillCalcQueue.shift();
+        if (elevation > globalElevation[currentHillCell]) {
+          globalElevation[currentHillCell] = elevation;
+          if (globalElevation[currentHillCell] === 4) { riverSourceCells.push(currentHillCell); }
+          for (let j = 0; j < globalNbrs[currentHillCell].length; j++) {
+            hillCalcQueue.push(globalNbrs[currentHillCell][j]);
+          }
         }
+        elevation--;
+        if (RNGen.random < steepness) { elevation--; }
       }
-      elevation--;
-      if (RNGen.random < steepness) { elevation--; }
     }
   }
   // Hills
   let numHills = Math.floor(n ** 2.5);
   for (let i = 0; i < numHills; i++) {
-    let elevation = Math.floor(RNGen.random() * 5);
     let peakCell = landCells[Math.floor(RNGen.random() * landCells.length)]
-    let hillCalcQueue = [peakCell];
-    while (elevation > 0 && globalElevation[peakCell] < 5) {
-      let currentHillCell = hillCalcQueue.shift();
-      if (elevation > globalElevation[currentHillCell]) {
-        globalElevation[currentHillCell] = elevation;
-        if (globalElevation[currentHillCell] === 4) { riverSourceCells.push(currentHillCell); }
-        for (let j = 0; j < globalNbrs[currentHillCell].length; j++) {
-          hillCalcQueue.push(globalNbrs[currentHillCell][j]);
+    if (globalOnshoreDistance[peakCell] > 5) {
+      let elevation = Math.floor(RNGen.random() * 5);
+      let hillCalcQueue = [peakCell];
+      while (elevation > 0 && globalElevation[peakCell] < 5) {
+        let currentHillCell = hillCalcQueue.shift();
+        if (elevation > globalElevation[currentHillCell]) {
+          globalElevation[currentHillCell] = elevation;
+          if (globalElevation[currentHillCell] === 4) { riverSourceCells.push(currentHillCell); }
+          for (let j = 0; j < globalNbrs[currentHillCell].length; j++) {
+            hillCalcQueue.push(globalNbrs[currentHillCell][j]);
+          }
         }
+        elevation--;
+        if (RNGen.random < steepness) { elevation--; }
       }
-      elevation--;
-      if (RNGen.random < steepness) { elevation--; }
     }
   }
 
@@ -616,9 +620,9 @@ export function generatePlanet(seed, n) {
     // cliffs
     /* */if (globalBiome[i] === 'ocean') { globalElevation[i] = 0; }
     else if (globalBiome[i] === 'shallows') { globalElevation[i] = 0; }
-    else if (globalElevation[i] > 0 && (globalBiome[i] === 'tropical beach' || globalBiome[i] === 'mangrove')) { globalBiome[i] = 'tropical cliff'; }
-    else if (globalElevation[i] > 0 && (globalBiome[i] === 'cold beach' || globalBiome[i] === 'salt marsh')) { globalBiome[i] = 'fjord'; }
-    else if (globalElevation[i] > 0 && globalBiome[i] === 'beach') { globalBiome[i] = 'cliff'; }
+    else if (globalElevation[i] > 2 && (globalBiome[i] === 'tropical beach' || globalBiome[i] === 'mangrove')) { globalBiome[i] = 'tropical cliff'; }
+    else if (globalElevation[i] > 2 && (globalBiome[i] === 'cold beach' || globalBiome[i] === 'salt marsh')) { globalBiome[i] = 'fjord'; }
+    else if (globalElevation[i] > 2 && globalBiome[i] === 'beach') { globalBiome[i] = 'cliff'; }
     // mountains
     else if (globalElevation[i] > 6 && globalBiome[i] == 'polar') { globalBiome[i] = 'nival'; }
     else if (globalElevation[i] > 8 && globalBiome[i] == 'tundra') { globalBiome[i] = 'nival'; }
@@ -650,7 +654,7 @@ export function generatePlanet(seed, n) {
   // place some ocean trenches
   for (let i = 0; i < 10 * Math.floor(Math.sqrt(n)); i++) {
     let drunkardStart = Math.floor(RNGen.random() * globalNbrs.length);
-    while (globalOnshoreDistance[drunkardStart] != 0) {
+    while (globalOnshoreDistance[drunkardStart] !== 0) {
       drunkardStart = Math.floor(RNGen.random() * globalNbrs.length);
     }
     drunkardsWalk(drunkardStart, globalNbrs, globalBiome, 400, 2, 'trench', 'ocean', 'direction', RNGen);
@@ -659,7 +663,7 @@ export function generatePlanet(seed, n) {
   // Place some rivers
   let lakeSourceTiles = [];
   let lakeTropicalSourceTiles = [];
-  let numRivers = 3 * Math.floor(Math.sqrt(n));
+  let numRivers = 4 * Math.floor(Math.sqrt(n));
   for (let i = 0; i < numRivers; i++) {
     let currentRiverCell = riverSourceCells[Math.floor(RNGen.random() * riverSourceCells.length)];
     let prevRiverCell;
@@ -762,8 +766,13 @@ export function generatePlanet(seed, n) {
       currentRiverCell = nextRiverCell;
     }
   }
-  // Place lakes
+  // Place lakes oases and prepare other wetlands
   let numLakes = 4;
+  let swampSources = [];
+  let marshSources = [];
+  let bogSources = [];
+  let fenSources = [];
+  let tropicalSwampSources = [];
   for (let i = 0; i < numLakes; i++) {
     let lakeCentre = lakeSourceTiles[Math.floor((RNGen.random() * lakeSourceTiles.length))];
     let lakeSize = 3 + Math.floor(RNGen.random() * 3);
@@ -781,20 +790,62 @@ export function generatePlanet(seed, n) {
         if (globalBiome[globalNbrs[i][j]] === 'desert' || globalBiome[globalNbrs[i][j]] === 'savanna') { globalBiome[globalNbrs[i][j]] = 'oasis'; }
       }
     }
+
+    if (globalElevation[i] < 3) {
+      // Marsh & Tropical swamp
+      if ((globalBiome[i] === 'river' || globalBiome[i] === 'tropical river') && globalOnshoreDistance[i] > 6) {
+        for (let j = 0; j < globalNbrs[i].length; j++) {
+          if (globalElevation[i] > globalElevation[globalNbrs[i][j]] &&
+            globalBiome[globalNbrs[i][j]] !== 'river' &&
+            globalBiome[globalNbrs[i][j]] !== 'tropical river' &&
+            globalBiome[globalNbrs[i][j]] !== 'lake' &&
+            globalBiome[globalNbrs[i][j]] !== 'tropical lake' &&
+            globalBiome[globalNbrs[i][j]] !== 'oasis') {
+            if (globalBiome[i] === 'river') { marshSources.push(globalNbrs[i][j]); }
+          }
+          if (globalBiome[globalNbrs[i][j]] === 'tropical rainforest') { tropicalSwampSources.push(globalNbrs[i][j]); }
+        }
+      }
+      // Swamp, bog, fen
+      else if (globalElevation[i] < 3 && globalOnshoreDistance[i] > 3) {
+        let higherNbrs = 0;
+        for (let j = 0; j < globalNbrs[i].length; j++) {
+          if (globalElevation[i] < globalElevation[globalNbrs[i][j]]) { higherNbrs++; }
+        }
+        if (higherNbrs >= 2) {
+          if (globalBiome[i] === 'temperate forest' || globalBiome[i] === 'temperate rainforest') {
+            if (RNGen.random() < 0.5) { swampSources.push(i); }
+            else { fenSources.push(i); }
+          }
+          if (globalBiome[i] === 'boreal forest') {
+            if (RNGen.random() < 0.5) { bogSources.push(i); }
+            else { fenSources.push(i); }
+          }
+        }
+      }
+    }
+
+    let numWetlands = Math.floor(Math.sqrt(n));
+
+    for (let i = 0; i < numWetlands; i++) {
+      globalBiome[fenSources[Math.floor(RNGen.random() * fenSources.length)]] = 'fen';
+      globalBiome[bogSources[Math.floor(RNGen.random() * bogSources.length)]] = 'bog';
+      globalBiome[marshSources[Math.floor(RNGen.random() * marshSources.length)]] = 'marsh';
+      globalBiome[swampSources[Math.floor(RNGen.random() * swampSources.length)]] = 'swamp';
+    }
+
+    for (let i = 0; i < 2; i++) {
+      floodFill(tropicalSwampSources[Math.floor(RNGen.random() * tropicalSwampSources.length)], globalNbrs, globalBiome, 2, 'tropical swamp', 'tropical rainforest');
+    }
+
+
+
+
+
+
+
   }
-
-  /*
-   TODO
-   Place
-   - Bog - cold, humid, low nutrient
-   - Fen - cold, humid, high nutrient
-   - Swamp - Humid, not near rivers
-   - marsh - humid ish, near rivers
-  */
-
-
-
-  return [interpvertices, globalNbrs, globalBiome, globalElevation];
+  return [interpvertices, globalNbrs, globalBiome, globalElevation, globalOnshoreDistance];
 }
 
 export function whatCellAmILookingAt(rotation, vertices) {
@@ -828,85 +879,21 @@ export function whatCellAmILookingAt(rotation, vertices) {
 
 export function naturalColours(globalBiome, seed) {
   let RNGen = new MersenneTwister(seed);
-  let colours = [];
-  for (let i = 0; i < globalBiome.length; i++) {
-    let thisColour = [];
-    /* */if (globalBiome[i] === 'polar')/*                */ { thisColour = [1.0, 1.0, 1.0] }
-    else if (globalBiome[i] === 'tundra')/*               */ { thisColour = [0.9, 1.0, 0.9] }
-    else if (globalBiome[i] === 'boreal forest')/*        */ { thisColour = [0.1, 0.5, 0.2] }
-    else if (globalBiome[i] === 'temperate forest')/*     */ { thisColour = [0.4, 0.6, 0.0] }
-    else if (globalBiome[i] === 'grassland')/*            */ { thisColour = [0.8, 0.9, 0.4] }
-    else if (globalBiome[i] === 'desert')/*               */ { thisColour = [1.0, 0.9, 0.5] }
-    else if (globalBiome[i] === 'savanna')/*              */ { thisColour = [0.8, 0.8, 0.2] }
-    else if (globalBiome[i] === 'tropical rainforest')/*  */ { thisColour = [0.2, 0.5, 0.1] }
-
-    else if (globalBiome[i] === 'nival')/*                */ { thisColour = [1.0, 1.0, 1.0] }
-    else if (globalBiome[i] === 'alpine')/*               */ { thisColour = [0.7, 0.6, 0.6] }
-    else if (globalBiome[i] === 'montane')/*              */ { thisColour = [0.2, 0.6, 0.3] }
-    else if (globalBiome[i] === 'volcano')/*              */ { thisColour = [1.0, 0.3, 0.0] }
-    else if (globalBiome[i] === 'encinal')/*              */ { thisColour = [0.5, 0.6, 0.0] }
-    else if (globalBiome[i] === 'desert grassland')/*     */ { thisColour = [0.8, 0.9, 0.5] }
-    else if (globalBiome[i] === 'cloud forest')/*         */ { thisColour = [0.1, 0.7, 0.3] }
-
-    else if (globalBiome[i] === 'ocean')/*                */ { thisColour = [0.0, 0.4, 1.0] }
-    else if (globalBiome[i] === 'shallows')/*             */ { thisColour = [0.0, 0.6, 1.0] }
-    else if (globalBiome[i] === 'trench')/*               */ { thisColour = [0.0, 0.2, 1.0] }
-
-    else if (globalBiome[i] === 'coral')/*                */ { thisColour = [1.0, 0.5, 0.4] }
-    else if (globalBiome[i] === 'tropical islet')/*       */ { thisColour = [1.0, 1.0, 0.7] }
-    else if (globalBiome[i] === 'islet')/*                */ { thisColour = [0.4, 0.6, 0.0] }
-    else if (globalBiome[i] === 'iceberg')/*              */ { thisColour = [0.9, 1.0, 1.0] }
-
-    else if (globalBiome[i] === 'tropical beach')/*       */ { thisColour = [1.0, 1.0, 0.7] }
-    else if (globalBiome[i] === 'beach')/*                */ { thisColour = [0.9, 0.9, 0.5] }
-    else if (globalBiome[i] === 'cold beach')/*           */ { thisColour = [0.9, 0.9, 0.5] }
-    else if (globalBiome[i] === 'tropical cliff')/*       */ { thisColour = [0.1, 0.8, 0.3] }
-    else if (globalBiome[i] === 'cliff')/*                */ { thisColour = [0.5, 0.4, 0.4] }
-    else if (globalBiome[i] === 'fjord')/*                */ { thisColour = [0.7, 0.5, 0.7] }
-
-    else if (globalBiome[i] === 'temperate rainforest')/* */ { thisColour = [0.3, 0.7, 0.0] }
-    else if (globalBiome[i] === 'chaparral')/*            */ { thisColour = [0.8, 0.9, 0.2] }
-    else if (globalBiome[i] === 'salt marsh')/*           */ { thisColour = [0.6, 0.7, 0.4] }
-    else if (globalBiome[i] === 'mangrove')/*             */ { thisColour = [0.6, 0.7, 0.0] }
-
-    else if (globalBiome[i] === 'glacier')/*              */ { thisColour = [0.9, 1.0, 1.0] }
-    else if (globalBiome[i] === 'river')/*                */ { thisColour = [0.4, 0.7, 1.0] }
-    else if (globalBiome[i] === 'tropical river')/*       */ { thisColour = [0.4, 0.7, 0.5] }
-
-    else if (globalBiome[i] === 'river fjord')/*          */ { thisColour = [0.4, 0.5, 0.7] }
-    else if (globalBiome[i] === 'waterfall')/*            */ { thisColour = [0.4, 0.7, 1.0] }
-    else if (globalBiome[i] === 'tropical waterfall')/*   */ { thisColour = [0.4, 0.7, 0.5] }
-    else if (globalBiome[i] === 'glacier valley')/*       */ { thisColour = [0.9, 1.0, 1.0] }
-    else if (globalBiome[i] === 'river valley')/*         */ { thisColour = [0.4, 0.7, 1.0] }
-    else if (globalBiome[i] === 'tropical river valley')/**/ { thisColour = [0.4, 0.7, 0.5] }
-    else if (globalBiome[i] === 'delta')/*                */ { thisColour = [0.7, 0.5, 0.0] }
-    else if (globalBiome[i] === 'tropical delta')/*       */ { thisColour = [0.7, 0.4, 0.0] }
-
-    else if (globalBiome[i] === 'lake')/*                 */ { thisColour = [0.3, 0.6, 0.9] }
-    else if (globalBiome[i] === 'tropical lake')/*        */ { thisColour = [0.3, 0.6, 0.4] }
-
-    else if (globalBiome[i] === 'swamp')/*                */ { thisColour = [0.4, 0.6, 0.3] }
-    else if (globalBiome[i] === 'marsh')/*                */ { thisColour = [0.6, 0.6, 0.5] }
-    else if (globalBiome[i] === 'bog')/*                  */ { thisColour = [0.3, 0.2, 0.1] }
-    else if (globalBiome[i] === 'fen')/*                  */ { thisColour = [0.7, 0.6, 0.5] }
-    else if (globalBiome[i] === 'oasis')/*                */ { thisColour = [0.5, 0.8, 0.0] }
-
+  let colours = biomeColours(globalBiome);
+  
+  for (let i = 0; i < globalBiome.length * 3; i = i+3) {
     if (RNGen.random() < 0.3) {
       let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 10;
-      thisColour[0] = thisColour[0] + clrChange;
+      colours[3 * i + 0] = colours[3 * i + 0] + clrChange;
     }
     if (RNGen.random() < 0.3) {
       let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 10;
-      thisColour[1] = thisColour[1] + clrChange;
+      colours[3 * i + 1] = colours[3 * i + 1] + clrChange;
     }
     if (RNGen.random() < 0.3) {
       let clrChange = (Math.floor(RNGen.random() * 2) - 1) / 10;
-      thisColour[2] = thisColour[2] + clrChange;
+      colours[3 * i + 2] = colours[3 * i + 2] + clrChange;
     }
-
-    colours.push(...thisColour);
-    colours.push(...thisColour);
-    colours.push(...thisColour);
   }
   return colours;
 }
@@ -969,6 +956,7 @@ export function biomeColours(globalBiome) {
     else if (globalBiome[i] === 'lake')/*                 */ { thisColour = [0.3, 0.6, 0.9] }
     else if (globalBiome[i] === 'tropical lake')/*        */ { thisColour = [0.3, 0.6, 0.4] }
 
+    else if (globalBiome[i] === 'tropical swamp')/*       */ { thisColour = [0.4, 0.5, 0.3] }
     else if (globalBiome[i] === 'swamp')/*                */ { thisColour = [0.4, 0.6, 0.3] }
     else if (globalBiome[i] === 'marsh')/*                */ { thisColour = [0.6, 0.6, 0.5] }
     else if (globalBiome[i] === 'bog')/*                  */ { thisColour = [0.3, 0.2, 0.1] }
@@ -983,17 +971,23 @@ export function biomeColours(globalBiome) {
 }
 
 export function elevationColours(globalElevation) {
-  // To view inland distance
-  //thisColour = [0,  globalOnshoreDistance[i] / 100, 0.7];
-
-  // To view Humidity
-  // To view temperature
-  // To view altitude
-
   let colours = [];
 
   for (let i = 0; i < globalElevation.length; i++) {
     let thisColour = [0.5, globalElevation[i] / 20, 0.3];
+
+    colours.push(...thisColour);
+    colours.push(...thisColour);
+    colours.push(...thisColour);
+  }
+  return colours;
+}
+
+export function onshoreColours(globalOnshoreDistance) {
+  let colours = [];
+
+  for (let i = 0; i < globalOnshoreDistance.length; i++) {
+    let thisColour = [globalOnshoreDistance[i]/80, globalOnshoreDistance[i]/80, 0.0];
 
     colours.push(...thisColour);
     colours.push(...thisColour);

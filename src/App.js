@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { elevationColours, generatePlanet, naturalColours } from './planetCreation.js'
+import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours } from './planetCreation.js'
 
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
@@ -17,6 +17,7 @@ function App() {
   const [scale, setScale] = useState(1);
   const [transformMatrix, setTransformMatrix] = useState([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
   const [lookingAt, setLookingAt] = useState(0);
+  const [planetDisplayType, setPlanetDisplayType] = useState('natural')
 
   const [planet, setPlanet] = useState([[0], [0]]);
   const [planetColours, setPlanetColours] = useState([0, 0]);
@@ -24,6 +25,7 @@ function App() {
   const [planetNeighbours, setPlanetNeighbours] = useState([0, 0]);
   const [planetBiomes, setPlanetBiomes] = useState([0, 0]);
   const [planetElevation, setPlanetElevation] = useState([0, 0]);
+  const [planetOnshoreDist, setPlanetOnshoreDist] = useState([0, 0]);
 
   const [displayBiome, setDisplayBiome] = useState('');
   const [displayElevation, setDisplayElevation] = useState(0);
@@ -33,20 +35,34 @@ function App() {
 
   useEffect(() => {
     setPlanet(generatePlanet(planetSeed, 100));
+    setPlanetDisplayType('natural');
   }, [planetSeed]);
 
   useEffect(() => {
     if (planet[2]) {
       if (planet[2].length > 0) {
-        setPlanetColours(naturalColours(planet[2], planetSeed));
-        //setPlanetColours(elevationColours(planet[3])) ;
         setPlanetVertices(planet[0]);
         setPlanetNeighbours(planet[1]);
         setPlanetBiomes(planet[2]);
         setPlanetElevation(planet[3]);
+        setPlanetOnshoreDist(planet[4]);
       }
     }
   }, [planet]);
+
+  useEffect(() => {
+    if (planet[2]) {
+      if (planet[2].length > 0) {
+        /* */if (planetDisplayType === 'natural')/*  */ { setPlanetColours(naturalColours(planet[2], planetSeed)); }
+        else if (planetDisplayType === 'biome')/*    */ { setPlanetColours(biomeColours(planet[2])); }
+        else if (planetDisplayType === 'elevation')/**/ { setPlanetColours(elevationColours(planet[3])); }
+        else if (planetDisplayType === 'onshore')/*  */ { setPlanetColours(onshoreColours(planet[4])); }
+      }
+    }
+  }, [planetDisplayType]);
+
+
+
 
   // Here is where you are generating the red reticle triangle - try to add this as an additional triangle instead of additional canvas
   useEffect(() => {
@@ -93,6 +109,7 @@ function App() {
         setScale={setScale} scale={scale}
         setLookingAt={setLookingAt}
         planetVertices={planetVertices}
+        changeDisplay={setPlanetDisplayType}
       />
     </div>
   );

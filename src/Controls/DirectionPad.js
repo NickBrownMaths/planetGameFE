@@ -3,7 +3,6 @@ import { whatCellAmILookingAt } from '../planetCreation';
 import ControlButton from "./ControlButton";
 import './DirectionPad.css'
 
-
 function DirectionPad(props) {
 
   let t = Math.PI / 32 * props.speed / props.scale;
