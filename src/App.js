@@ -41,25 +41,28 @@ function App() {
   useEffect(() => {
     if (planet[2]) {
       if (planet[2].length > 0) {
-        setPlanetVertices(planet[0]);
-        setPlanetNeighbours(planet[1]);
-        setPlanetBiomes(planet[2]);
-        setPlanetElevation(planet[3]);
-        setPlanetOnshoreDist(planet[4]);
-      }
-    }
-  }, [planet]);
-
-  useEffect(() => {
-    if (planet[2]) {
-      if (planet[2].length > 0) {
         /* */if (planetDisplayType === 'natural')/*  */ { setPlanetColours(naturalColours(planet[2], planetSeed)); }
         else if (planetDisplayType === 'biome')/*    */ { setPlanetColours(biomeColours(planet[2])); }
         else if (planetDisplayType === 'elevation')/**/ { setPlanetColours(elevationColours(planet[3])); }
         else if (planetDisplayType === 'onshore')/*  */ { setPlanetColours(onshoreColours(planet[4])); }
       }
     }
-  }, [planetDisplayType]);
+  }, [planet, planetDisplayType]);
+
+  useEffect(() => {
+    if (planet[2]) {
+      if (planet[2].length > 0) {
+        setPlanetVertices(planet[0]);
+        setPlanetNeighbours(planet[1]);
+        setPlanetBiomes(planet[2]);
+        setPlanetElevation(planet[3]);
+        setPlanetOnshoreDist(planet[4]);
+        setPlanetDisplayType('natural');
+      }
+    }
+  }, [planet]);
+
+
 
 
 
