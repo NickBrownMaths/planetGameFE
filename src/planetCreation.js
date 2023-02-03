@@ -962,7 +962,9 @@ export function elevationColours(globalElevation) {
   let colours = [];
 
   for (let i = 0; i < globalElevation.length; i++) {
-    let thisColour = [globalElevation[i] / 20, globalElevation[i] / 20, globalElevation[i] / 20];
+    let thisColour = [0, globalElevation[i] / 20, 0];
+
+    if (globalElevation[i] === 0) { thisColour = [0, 0, 1]; }
 
     colours.push(...thisColour);
     colours.push(...thisColour);
@@ -975,7 +977,7 @@ export function onshoreColours(globalOnshoreDistance) {
   let colours = [];
 
   for (let i = 0; i < globalOnshoreDistance.length; i++) {
-    let thisColour = [globalOnshoreDistance[i] / 80, globalOnshoreDistance[i] / 160, 1 - globalOnshoreDistance[i] / 80];
+    let thisColour = [globalOnshoreDistance[i] / 100, globalOnshoreDistance[i] / 200, 1 - globalOnshoreDistance[i] / 100];
 
     colours.push(...thisColour);
     colours.push(...thisColour);

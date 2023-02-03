@@ -29,6 +29,7 @@ function App() {
 
   const [displayBiome, setDisplayBiome] = useState('');
   const [displayElevation, setDisplayElevation] = useState(0);
+  const [displayOnshore, setDisplayOnshore] = useState(0);
 
   const [reticleVertexData, setReticleVertexData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0,]);
   const [reticleColourData, setReticleVolourData] = useState([1, 0, 0, 1, 0, 0, 1, 0, 0,]);
@@ -84,6 +85,7 @@ function App() {
       if (planetBiomes.length > lookingAt) {
         setDisplayBiome(planetBiomes[lookingAt]);
         setDisplayElevation(planetElevation[lookingAt])
+        setDisplayOnshore(planetOnshoreDist[lookingAt])
       }
     }
   }, [transformMatrix]);
@@ -98,8 +100,10 @@ function App() {
         speed={speed}
         vertexdata={planetVertices}
         colourdata={planetColours}
+        planetDisplayType={planetDisplayType}
         displayBiome={displayBiome}
         displayElevation={displayElevation}
+        displayOnshore={displayOnshore}
         reticlevertexdata={reticleVertexData}
         reticlecolourdata={reticleColourData}
       />

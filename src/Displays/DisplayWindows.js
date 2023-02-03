@@ -21,8 +21,10 @@ function DisplayWindows(props) {
         scale={props.scale}
         speed={props.speed}
         planetSeed={props.planetSeed} 
+        planetDisplayType={props.planetDisplayType}
         displayBiome={props.displayBiome}
         displayElevation={props.displayElevation}
+        displayOnshore={props.displayOnshore}
         />
     </div>
   )
