@@ -1,5 +1,5 @@
-import { transpose4, transpose3, matrixMatrixMultiply3, matrixMatrixMultiply4, flatten } from '../matrices';
-import { whatCellAmILookingAt } from '../planetCreation';
+import { transpose4, transpose3, matrixMatrixMultiply3, matrixMatrixMultiply4, flatten } from '../Utils/matrices';
+import { whatCellAmILookingAt } from '../Utils/planetCreation';
 import ControlButton from "./ControlButton";
 import './DirectionPad.css'
 

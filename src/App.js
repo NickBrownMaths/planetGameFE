@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours } from './planetCreation.js'
+import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours } from './Utils/planetCreation.js'
 
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';

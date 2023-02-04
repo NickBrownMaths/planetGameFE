@@ -1,4 +1,4 @@
-import { scalarMatrixMultiply3, flatten } from '../matrices';
+import { scalarMatrixMultiply3, flatten } from '../Utils/matrices';
 import React, { useRef, useEffect } from 'react';
 import './ObsWindowsCanvas.css';
 
