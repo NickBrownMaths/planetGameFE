@@ -8,7 +8,7 @@ function SeedBox(props) {
 
   return (
     <form className='SeedForm' onSubmit={handleSubmit ((data) => {props.setPlanetSeed(data.seed)})}>
-      <input {...register('seed')} placeholder='planet #' className='SeedInput' />
+      <input type='number' {...register('seed')} placeholder='planet #' className='SeedInput' />
       <input className='SeedSubmit' type='submit' value='Go' />
     </form>
   )

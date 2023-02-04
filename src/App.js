@@ -5,6 +5,7 @@ import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
 
 import './App.css';
+import WordGen from './Utils/WordGen.js';
 
 function App() {
   const [cosmosSeed, setCosmosSeed] = useState(0);
@@ -30,12 +31,15 @@ function App() {
   const [displayBiome, setDisplayBiome] = useState('');
   const [displayElevation, setDisplayElevation] = useState(0);
   const [displayOnshore, setDisplayOnshore] = useState(0);
+  const [planetName, setPlanetName] = useState('');
 
   const [reticleVertexData, setReticleVertexData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0,]);
   const [reticleColourData, setReticleVolourData] = useState([1, 0, 0, 1, 0, 0, 1, 0, 0,]);
 
   useEffect(() => {
     setPlanet(generatePlanet(planetSeed, 100));
+    let wordGen = new WordGen(planetSeed);
+    setPlanetName(wordGen.createName());
     setPlanetDisplayType('natural');
     setTransformMatrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]) ;
     setScale(1);
@@ -101,6 +105,7 @@ function App() {
         speed={speed}
         vertexdata={planetVertices}
         colourdata={planetColours}
+        planetName={planetName}
         planetDisplayType={planetDisplayType}
         displayBiome={displayBiome}
         displayElevation={displayElevation}

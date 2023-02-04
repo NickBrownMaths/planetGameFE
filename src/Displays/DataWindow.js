@@ -14,6 +14,9 @@ function DataWindow(props) {
   return (
     <div className='DataWindow'>
       <div className='DataWindowText'>
+        planet: {props.planetName}
+        <br />
+        <br />
         planet#: {props.planetSeed}
         <br />
         <br />
