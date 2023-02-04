@@ -657,7 +657,7 @@ export function generatePlanet(seed, n) {
     while (globalOnshoreDistance[drunkardStart] !== 0) {
       drunkardStart = Math.floor(RNGen.random() * globalNbrs.length);
     }
-    drunkardsWalk(drunkardStart, globalNbrs, globalBiome, 400, 2, 'trench', 'ocean', 'direction', RNGen);
+    drunkardsWalk(drunkardStart, globalNbrs, globalBiome, 400, 2, 'ocean trench', 'ocean', 'direction', RNGen);
   }
 
   // Place some rivers
@@ -718,7 +718,7 @@ export function generatePlanet(seed, n) {
       //else if (globalBiome[currentRiverCell] === 'shallows')/*             */ { globalBiome[currentRiverCell] = 'shallows' }
       //else if (globalBiome[currentRiverCell] === 'islet')/*                */ { globalBiome[currentRiverCell] = 'islet' }
       //else if (globalBiome[currentRiverCell] === 'ocean')/*                */ { globalBiome[currentRiverCell] = 'ocean' }
-      //else if (globalBiome[currentRiverCell] === 'trench')/*               */ { globalBiome[currentRiverCell] = 'trench' }
+      //else if (globalBiome[currentRiverCell] === 'ocean trench')/*               */ { globalBiome[currentRiverCell] = 'ocean trench' }
       //else if (globalBiome[currentRiverCell] === 'coral')/*                */ { globalBiome[currentRiverCell] = 'coral' }
 
       if (globalElevation[currentRiverCell] > globalElevation[prevRiverCell]) {
@@ -909,7 +909,7 @@ export function biomeColours(globalBiome) {
 
     else if (globalBiome[i] === 'ocean')/*                */ { thisColour = [0.0, 0.4, 1.0] }
     else if (globalBiome[i] === 'shallows')/*             */ { thisColour = [0.0, 0.6, 1.0] }
-    else if (globalBiome[i] === 'trench')/*               */ { thisColour = [0.0, 0.2, 1.0] }
+    else if (globalBiome[i] === 'ocean trench')/*         */ { thisColour = [0.0, 0.2, 1.0] }
 
     else if (globalBiome[i] === 'coral')/*                */ { thisColour = [1.0, 0.5, 0.4] }
     else if (globalBiome[i] === 'tropical islet')/*       */ { thisColour = [1.0, 1.0, 0.7] }
