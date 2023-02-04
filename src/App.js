@@ -37,6 +37,8 @@ function App() {
   useEffect(() => {
     setPlanet(generatePlanet(planetSeed, 100));
     setPlanetDisplayType('natural');
+    setTransformMatrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]) ;
+    setScale(1);
   }, [planetSeed]);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ function App() {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  
+
   return (
     <div className="App">
       <DisplayWindows
