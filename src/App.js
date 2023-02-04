@@ -65,9 +65,6 @@ function App() {
 
 
 
-
-
-
   // Here is where you are generating the red reticle triangle - try to add this as an additional triangle instead of additional canvas
   useEffect(() => {
     let reticleVertices = [0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -91,6 +88,8 @@ function App() {
   }, [transformMatrix]);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+  
   return (
     <div className="App">
       <DisplayWindows
