@@ -1,4 +1,5 @@
 import './DataWindow.css'
+import MineralList from './MineralList';
 
 function DataWindow(props) {
   let displaySpeed = Math.log2(props.speed);
@@ -21,12 +22,7 @@ function DataWindow(props) {
         {text}
         <br />
         <br />
-        This Region contains:
-        <ul>
-          {props.localResources.map((resource, index) => (
-            <li key={index}>{resource.NAME}{" ("}{resource.TYPE}{")"}</li>
-          ))}
-        </ul>
+        <MineralList localResources={props.localResources}/>
       </div>
     </div>
   )
