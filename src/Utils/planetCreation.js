@@ -834,12 +834,120 @@ export function generatePlanet(seed, n) {
   return [interpvertices, globalNbrs, globalBiome, globalElevation, globalOnshoreDistance];
 }
 
-export function applyCosmosResources(seed, cosmosMats) {
+export function applyCosmosResources(seed, globalBiome, cosmosMats) {
   // Create planetMaterials from cosmosMaterials
+  let RNG = new MersenneTwister(seed);
 
-  
+  let planetIgn = [];
+  let planetSed = [];
+  let planetMet = [];
+  let planetDirt = [];
+  let planetPrecMet = [];
+
+  let numMats = 30 + Math.floor(RNG.random() * 15);
+  for (let i = 0; i < numMats; i++) { planetIgn.push(cosmosMats.IGN_ROCKS[Math.floor(RNG.random() * cosmosMats.IGN_ROCKS.length)]); }
+  numMats = 30 + Math.floor(RNG.random() * 15);
+  for (let i = 0; i < numMats; i++) { planetSed.push(cosmosMats.SED_ROCKS[Math.floor(RNG.random() * cosmosMats.SED_ROCKS.length)]); }
+  numMats = 30 + Math.floor(RNG.random() * 15);
+  for (let i = 0; i < numMats; i++) { planetMet.push(cosmosMats.MET_ROCKS[Math.floor(RNG.random() * cosmosMats.MET_ROCKS.length)]); }
+  numMats = 15 + Math.floor(RNG.random() * 7);
+  for (let i = 0; i < numMats; i++) { planetDirt.push(cosmosMats.DIRT[Math.floor(RNG.random() * cosmosMats.DIRT.length)]); }
+  numMats = 5 + Math.floor(RNG.random() * 2);
+  for (let i = 0; i < numMats; i++) { planetPrecMet.push(cosmosMats.PREC_METS[Math.floor(RNG.random() * cosmosMats.PREC_METS.length)]); }
+
+  let globalMinerals = [];
+  for (let i = 0; i < globalBiome.length; i++) {
+    globalMinerals.push([]);
+    numMats = 1 + Math.floor(RNG.random() * 3);
+    for (let j = 0; j < numMats; j++) {
+      let rand = Math.floor(RNG.random() * planetIgn.length);
+      if (globalMinerals[i].filter(e => e.NAME === planetIgn[rand].NAME).length > 0) { }
+      else { globalMinerals[i].push(planetIgn[rand]); }
+    }
+    numMats = 0 + Math.floor(RNG.random() * 3);
+    for (let j = 0; j < numMats; j++) {
+      let rand = Math.floor(RNG.random() * planetSed.length);
+      if (globalMinerals[i].filter(e => e.NAME === planetSed[rand].NAME).length > 0) { }
+      else { globalMinerals[i].push(planetSed[rand]); }
+    }
+    numMats = 1 + Math.floor(RNG.random() * 3);
+    for (let j = 0; j < numMats; j++) {
+      let rand = Math.floor(RNG.random() * planetMet.length);
+      if (globalMinerals[i].filter(e => e.NAME === planetMet[rand].NAME).length > 0) { }
+      else { globalMinerals[i].push(planetMet[rand]); }
+    }
+    numMats = 0 + Math.floor(RNG.random() * 3);
+    for (let j = 0; j < numMats; j++) {
+      let rand = Math.floor(RNG.random() * planetDirt.length);
+      if (globalMinerals[i].filter(e => e.NAME === planetDirt[rand].NAME).length > 0) { }
+      else { globalMinerals[i].push(planetDirt[rand]); }
+    }
+    numMats = - 18 + Math.floor(RNG.random() * 20);
+    for (let j = 0; j < numMats; j++) {
+      let rand = Math.floor(RNG.random() * planetPrecMet.length);
+      if (globalMinerals[i].filter(e => e.NAME === planetPrecMet[rand].NAME).length > 0) { }
+      else { globalMinerals[i].push(planetPrecMet[rand]); }
+    }
 
 
+
+
+    // /* */if (globalBiome[i] === 'polar')/*                */ { }
+    // else if (globalBiome[i] === 'tundra')/*               */ { }
+    // else if (globalBiome[i] === 'boreal forest')/*        */ { }
+    // else if (globalBiome[i] === 'temperate forest')/*     */ { }
+    // else if (globalBiome[i] === 'grassland')/*            */ { }
+    // else if (globalBiome[i] === 'desert')/*               */ { }
+    // else if (globalBiome[i] === 'savanna')/*              */ { }
+    // else if (globalBiome[i] === 'tropical rainforest')/*  */ { }
+    // else if (globalBiome[i] === 'nival')/*                */ { }
+    // else if (globalBiome[i] === 'alpine')/*               */ { }
+    // else if (globalBiome[i] === 'montane')/*              */ { }
+    // else if (globalBiome[i] === 'volcano')/*              */ { }
+    // else if (globalBiome[i] === 'encinal')/*              */ { }
+    // else if (globalBiome[i] === 'desert grassland')/*     */ { }
+    // else if (globalBiome[i] === 'cloud forest')/*         */ { }
+    // else if (globalBiome[i] === 'ocean')/*                */ { }
+    // else if (globalBiome[i] === 'shallows')/*             */ { }
+    // else if (globalBiome[i] === 'ocean trench')/*         */ { }
+    // else if (globalBiome[i] === 'coral')/*                */ { }
+    // else if (globalBiome[i] === 'tropical islet')/*       */ { }
+    // else if (globalBiome[i] === 'islet')/*                */ { }
+    // else if (globalBiome[i] === 'iceberg')/*              */ { }
+    // else if (globalBiome[i] === 'tropical beach')/*       */ { }
+    // else if (globalBiome[i] === 'beach')/*                */ { }
+    // else if (globalBiome[i] === 'cold beach')/*           */ { }
+    // else if (globalBiome[i] === 'tropical cliff')/*       */ { }
+    // else if (globalBiome[i] === 'cliff')/*                */ { }
+    // else if (globalBiome[i] === 'fjord')/*                */ { }
+    // else if (globalBiome[i] === 'temperate rainforest')/* */ { }
+    // else if (globalBiome[i] === 'chaparral')/*            */ { }
+    // else if (globalBiome[i] === 'salt marsh')/*           */ { }
+    // else if (globalBiome[i] === 'mangrove')/*             */ { }
+    // else if (globalBiome[i] === 'glacier')/*              */ { }
+    // else if (globalBiome[i] === 'river')/*                */ { }
+    // else if (globalBiome[i] === 'tropical river')/*       */ { }
+    // else if (globalBiome[i] === 'river fjord')/*          */ { }
+    // else if (globalBiome[i] === 'waterfall')/*            */ { }
+    // else if (globalBiome[i] === 'tropical waterfall')/*   */ { }
+    // else if (globalBiome[i] === 'glacier valley')/*       */ { }
+    // else if (globalBiome[i] === 'river valley')/*         */ { }
+    // else if (globalBiome[i] === 'tropical river valley')/**/ { }
+    // else if (globalBiome[i] === 'delta')/*                */ { }
+    // else if (globalBiome[i] === 'tropical delta')/*       */ { }
+    // else if (globalBiome[i] === 'lake')/*                 */ { }
+    // else if (globalBiome[i] === 'tropical lake')/*        */ { }
+    // else if (globalBiome[i] === 'tropical swamp')/*       */ { }
+    // else if (globalBiome[i] === 'swamp')/*                */ { }
+    // else if (globalBiome[i] === 'marsh')/*                */ { }
+    // else if (globalBiome[i] === 'bog')/*                  */ { }
+    // else if (globalBiome[i] === 'fen')/*                  */ { }
+    // else if (globalBiome[i] === 'oasis')/*                */ { }
+  }
+
+
+
+  return globalMinerals;
 }
 
 export function whatCellAmILookingAt(rotation, vertices) {

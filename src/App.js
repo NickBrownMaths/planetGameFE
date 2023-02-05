@@ -43,7 +43,6 @@ function App() {
 
   useEffect(() => {
     let mats = generateCosmosMaterials(cosmosSeed) ;
-    console.log(mats);
     setCosmosMaterials(mats);
   }, [cosmosSeed]);
 
@@ -54,7 +53,6 @@ function App() {
     setPlanetDisplayType('natural');
     setTransformMatrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
     setScale(1);
-    setPlanetResources(applyCosmosResources(planetSeed, cosmosMaterials)) ;
   }, [planetSeed]);
 
   useEffect(() => {
@@ -77,6 +75,7 @@ function App() {
         setPlanetElevation(planet[3]);
         setPlanetOnshoreDist(planet[4]);
         setPlanetDisplayType('natural');
+        setPlanetResources(applyCosmosResources(planetSeed, planet[2], cosmosMaterials));
       }
     }
   }, [planet]);
@@ -120,6 +119,7 @@ function App() {
         displayBiome={displayBiome}
         displayElevation={displayElevation}
         displayOnshore={displayOnshore}
+        localResources={planetResources[lookingAt]}
         reticlevertexdata={reticleVertexData}
         reticlecolourdata={reticleColourData}
       />

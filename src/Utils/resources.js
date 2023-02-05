@@ -129,7 +129,6 @@ export function generateCosmosMaterials(seed) {
       else if (newMat.BEARING.TYPE === MATERIAL.ROCK.GEM.SEMIPRECIOUS)/**/ { cosmosSemiGems.push(newMat.BEARING); }
     }
   }
-
   numMats = 200 + Math.floor(RNG.random() * 100);
   for (let i = 0; i < numMats; i++) {
     let newMat = generateMaterial(MATERIAL.ROCK.SEDIMENTARY, RNG.random_int());
@@ -168,9 +167,9 @@ export function generateCosmosMaterials(seed) {
     DIRT: cosmosDirt,
     PREC_GEMS: cosmosPrecGems,
     SEMI_GEMS: cosmosSemiGems,
-    PREC_METS: cosmosCommMets,
+    COMM_METS: cosmosCommMets,
     UNCO_METS: cosmosUncoMets,
-    COMM_METS: cosmosPrecMets,
+    PREC_METS: cosmosPrecMets,
     CERAMICS: cosmosCeramic,
     GLASS: cosmosGlass,
   }
