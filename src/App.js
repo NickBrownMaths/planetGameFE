@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react';
-import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours } from './Utils/planetCreation.js'
+import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours, applyCosmosResources } from './Utils/planetCreation.js'
 
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
 
 import './App.css';
 import WordGen from './Utils/WordGen.js';
+import { generateCosmosMaterials, generateMaterial, MATERIAL } from './Utils/resources.js';
 
 function App() {
-  const [cosmosSeed, setCosmosSeed] = useState(0);
+  const [cosmosSeed, setCosmosSeed] = useState(22);
   const [galaxySeed, setGalaxySeed] = useState(0);
   const [systemSeed, setSystemSeed] = useState(0);
   const [planetSeed, setPlanetSeed] = useState(0);
   const [regionSeed, setRegionSeed] = useState(0);
+
+  const [cosmosMaterials, setCosmosMaterials] = useState([0, 0]);
 
   const [speed, setSpeed] = useState(1);
   const [scale, setScale] = useState(1);
@@ -27,6 +30,8 @@ function App() {
   const [planetBiomes, setPlanetBiomes] = useState([0, 0]);
   const [planetElevation, setPlanetElevation] = useState([0, 0]);
   const [planetOnshoreDist, setPlanetOnshoreDist] = useState([0, 0]);
+  const [planetResources, setPlanetResources] = useState([0, 0]);
+
 
   const [displayBiome, setDisplayBiome] = useState('');
   const [displayElevation, setDisplayElevation] = useState(0);
@@ -37,12 +42,19 @@ function App() {
   const [reticleColourData, setReticleVolourData] = useState([1, 0, 0, 1, 0, 0, 1, 0, 0,]);
 
   useEffect(() => {
+    let mats = generateCosmosMaterials(cosmosSeed) ;
+    console.log(mats);
+    setCosmosMaterials(mats);
+  }, [cosmosSeed]);
+
+  useEffect(() => {
     setPlanet(generatePlanet(planetSeed, 100));
     let wordGen = new WordGen(planetSeed);
     setPlanetName(wordGen.createName());
     setPlanetDisplayType('natural');
-    setTransformMatrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]) ;
+    setTransformMatrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
     setScale(1);
+    setPlanetResources(applyCosmosResources(planetSeed, cosmosMaterials)) ;
   }, [planetSeed]);
 
   useEffect(() => {
@@ -68,8 +80,6 @@ function App() {
       }
     }
   }, [planet]);
-
-
 
   // Here is where you are generating the red reticle triangle - try to add this as an additional triangle instead of additional canvas
   useEffect(() => {

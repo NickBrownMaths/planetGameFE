@@ -834,6 +834,14 @@ export function generatePlanet(seed, n) {
   return [interpvertices, globalNbrs, globalBiome, globalElevation, globalOnshoreDistance];
 }
 
+export function applyCosmosResources(seed, cosmosMats) {
+  // Create planetMaterials from cosmosMaterials
+
+  
+
+
+}
+
 export function whatCellAmILookingAt(rotation, vertices) {
   let lookingAtIdx = 0;
   let nearestZ = 0;

@@ -42,7 +42,7 @@ class WordGen {
 
     let rand = this.RNG.random();
     word = word + this.createSyllable();
-    while (rand < 0.3) {
+    while (rand < 0.4) {
       rand = this.RNG.random() ;
       word = word + this.createSyllable();
       rand = this.RNG.random() ;
