@@ -1,5 +1,4 @@
 import ControlButton from "./ControlButton";
-import './ViewsPad.css'
 
 function ViewsPad(props) {
 

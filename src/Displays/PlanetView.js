@@ -1,13 +1,8 @@
 import PlanetCanvas from "./PlanetCanvas";
 import ReticleCanvas from "./ReticleCanvas";
 
-import './PlanetView.css';
-
 function PlanetView(props) {
   const draw = (ctx) => { }
-
-
-
 
   return (
     <div className='PlanetView'>
@@ -30,8 +25,6 @@ function PlanetView(props) {
 
     </div>
   )
-
-
 
 }
 

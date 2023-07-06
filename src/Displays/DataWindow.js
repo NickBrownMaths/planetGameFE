@@ -1,4 +1,3 @@
-import './DataWindow.css'
 import MineralList from './MineralList';
 
 function DataWindow(props) {

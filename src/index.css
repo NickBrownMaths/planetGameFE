@@ -12,3 +12,234 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+}
+
+.DisplayWindows {
+  display: grid;
+  column-gap: 3vmin;
+  grid-template-columns: 70vmin calc(100vw - 85vmin);
+  margin-top: 3vmin;
+}
+
+.ObservationWindow {
+  width: 70vmin;
+  padding-top: 70vmin;
+
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: 5px;
+  border-radius: 15px;
+
+  background-color: rgb(15, 15, 53);
+
+  position: relative;
+}
+
+.CentreReticle {
+  position:absolute;
+  border-style: solid;
+  border-color: red;
+  width:10px;
+  height:10px;
+
+  top: 292px;
+  left: 292px;
+  border-radius: 10px;
+}
+
+.DataWindow {
+  width: calc(100vw - 75vmin);
+  padding-top: 600px;
+
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: 5px;
+  border-radius: 15px;
+
+  color: rgb(27, 90, 29);
+  background-color: rgb(10, 22, 9);
+
+  position: relative;
+
+}
+
+.DataWindowText {
+  font-family: consolas;
+  font-size: large;
+  font-weight: bold;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 10px
+}
+
+.ObsWindowCanvas {
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+.DataWindow {
+  width: 300px;
+  padding-top: 600px;
+
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: 5px;
+  border-radius: 15px;
+
+  color: rgb(27, 90, 29);
+  background-color: rgb(10, 22, 9);
+
+  position: relative;
+
+}
+
+.DataWindowText {
+  font-family: consolas;
+  font-size: large;
+  font-weight: bold;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 10px
+}
+
+.DisplayWindows {
+  display: grid;
+  column-gap: 50px;
+  grid-template-columns: 600px 300px;
+  
+  margin-top: 20px;
+
+  margin-left: calc((100% - 950px)/2);
+
+}
+
+.ObservationWindow {
+  width: 600px;
+  padding-top: 600px;
+
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: 5px;
+  border-radius: 15px;
+
+  background-color: rgb(15, 15, 53);
+
+  position: relative;
+}
+
+.ObsWindowCanvas {
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+.PlanetView {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  bottom: 0;
+  right: 0;
+  margin: 0px
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ControlBar {
+  width: 1000px;
+  height: 120px;
+
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: 5px;
+  border-radius: 15px;
+
+  background-color: darkgray;
+
+  margin-top: 20px;
+  margin-left: calc((100% - 1000px)/2);
+
+  position: relative;
+}
+
+.ControlButton{
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: xx-large;
+}
+
+.DirectionPad {
+  display: grid;
+  column-gap: 10px;
+  row-gap: 10px;
+  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.SeedForm {
+  top: 5px;
+  left: 425px;
+  display: grid;
+  row-gap: 10px;
+  grid-template-columns: 300px;
+  position: absolute;
+}
+
+.SeedInput {
+  width: 300px;
+  height: 45px;
+  border-radius: 5px;
+  font-size: x-large;
+  font-family: consolas;
+  text-align: center;
+  border-color: black;
+}
+.SeedSubmit {
+  width: 308px;
+  height: 49px;
+  border-radius: 5px;
+  font-size: x-large;
+  font-family: consolas;
+  text-align: center;
+  padding: 0px;
+} 
+
+.ViewsPad {
+  display: grid;
+  column-gap: 10px;
+  row-gap: 10px;
+  grid-template-columns: 50px 50px;
+  position: absolute;
+  top: 5px;
+  left: 743px;
+}

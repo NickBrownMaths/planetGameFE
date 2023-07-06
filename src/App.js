@@ -4,7 +4,6 @@ import { generatePlanet, elevationColours, naturalColours, biomeColours, onshore
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
 
-import './App.css';
 import WordGen from './Utils/WordGen.js';
 import { generateCosmosMaterials, generateMaterial, MATERIAL } from './Utils/resources.js';
 
@@ -102,8 +101,6 @@ function App() {
     }
   }, [transformMatrix]);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
   return (
     <div className="App">

@@ -1,5 +1,3 @@
-import './ControlButton.css'
-
 function ControlButton(props) {
   return (
     <button className='ControlButton' onClick={props.onClick}>

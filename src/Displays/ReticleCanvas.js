@@ -1,6 +1,5 @@
 import { scalarMatrixMultiply3, flatten } from '../Utils/matrices';
 import React, { useRef, useEffect } from 'react';
-import './ObsWindowsCanvas.css';
 
 const ReticleCanvas = props => {
 

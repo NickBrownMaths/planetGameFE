@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import './SeedBox.css'
 
 function SeedBox(props) {
   let inputData = '';

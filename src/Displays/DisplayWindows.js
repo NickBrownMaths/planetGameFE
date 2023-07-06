@@ -1,8 +1,6 @@
 import DataWindow from "./DataWindow";
 import ObservationWindow from "./ObservationWindow";
 
-import './DisplayWindows.css'
-
 function DisplayWindows(props) {
   return (
     <div className="DisplayWindows">

@@ -1,7 +1,6 @@
 import DirectionPad from './DirectionPad';
 import SeedBox from './SeedBox';
 
-import './ControlBar.css'
 import ViewsPad from './ViewsPad';
 
 function ControlBar(props) {

@@ -1,9 +1,0 @@
-.ViewsPad {
-  display: grid;
-  column-gap: 10px;
-  row-gap: 10px;
-  grid-template-columns: 50px 50px;
-  position: absolute;
-  top: 5px;
-  left: 743px;
-}
