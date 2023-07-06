@@ -1,3 +1,5 @@
+import { generateMaterialBearingList } from "../Utils/resources";
+
 function MineralList(props) {
 
   let text = 'This Region contains:'
@@ -9,7 +11,7 @@ function MineralList(props) {
         < ul >
           {
             props.localResources.map((resource, index) => (
-              <li key={index}>{resource.NAME}{" ("}{resource.TYPE}{")"}</li>
+              <li key={index}> {generateMaterialBearingList(resource)} </li>
             ))
           }
         </ul >

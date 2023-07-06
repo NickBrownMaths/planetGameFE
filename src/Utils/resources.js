@@ -72,7 +72,7 @@ export function generateMaterial(type, seed) {
   let WG = new WordGen(RNG.random_int());
   let name = WG.createWord();
 
-  let bearing;
+  let bearing = "";
   rand = RNG.random_int();
   /**/ if (type === MATERIAL.ROCK.IGNEOUS/*    */ && RNG.random() < 0.1) { bearing = generateMaterial(MATERIAL.ROCK.GEM.SEMIPRECIOUS, rand); }
   else if (type === MATERIAL.ROCK.IGNEOUS/*    */ && RNG.random() < 0.2) { bearing = generateMaterial(MATERIAL.METAL.PRECIOUS,/*   */ rand); }
@@ -93,6 +93,7 @@ export function generateMaterial(type, seed) {
   let newMaterial = {
     NAME: name,
     TYPE: type,
+    SEED: seed,
     STRENGTH: str,
     TOUGHNESS: tgh,
     HARDNESS: hrd,
@@ -174,4 +175,15 @@ export function generateCosmosMaterials(seed) {
     GLASS: cosmosGlass,
   }
   return cosmosMaterials;
+}
+
+export function generateMaterialBearingList(material) {
+  let thisLevel = material.NAME + " (" + material.TYPE + ")" ;
+  
+  if (typeof(material.BEARING) === 'object') {
+    let subLevel = generateMaterialBearingList(material.BEARING) ;
+    thisLevel = thisLevel + " which bears " + subLevel;
+  }
+
+  return thisLevel;
 }

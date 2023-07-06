@@ -39,13 +39,15 @@ class WordGen {
 
   createWord() {
     let word = '';
-
     let rand = this.RNG.random();
     word = word + this.createSyllable();
-    while (rand < 0.4) {
+
+    let totalSyllables = 1;
+    while (rand < 0.4 / Math.sqrt(totalSyllables)) {
       rand = this.RNG.random() ;
       word = word + this.createSyllable();
       rand = this.RNG.random() ;
+      totalSyllables++;
     }
     return word;
   }
