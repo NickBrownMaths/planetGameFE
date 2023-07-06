@@ -105,7 +105,7 @@ code {
 
 
 .ControlBar {
-  width: 97vw;
+  width: 95.5vw;
   height: 15.5vmin;
 
   border-style: solid;
@@ -126,6 +126,7 @@ code {
   height: 7vmin;
   border-radius: 1vmin;
   font-size: 3vmin;
+  border-style: none;
 }
 
 .DirectionPad, .ViewsPad {
@@ -141,7 +142,7 @@ code {
 .ViewsPad {
   grid-template-columns: 7vmin 7vmin;
   position: absolute;
-  left: 89.25vmin;
+  left: 88.5vmin;
 }
 
 .SeedForm {
@@ -155,18 +156,22 @@ code {
 
 .SeedInput {
   width: 35vmin;
-  height: 6.5vmin;
+  height: 7vmin;
   border-radius: 1vmin;
   font-size: 3vmin;
   font-family: consolas;
   text-align: center;
-  border-color: black;
+  border-style: none;
+  color: rgb(27, 90, 29);
+  background-color: rgb(10, 22, 9);
+  border-style: none;
 }
 
 .SeedSubmit {
-  width: 36vmin;
-  height: 6.75vmin;
-  border-radius: 1vmin;
+  width: 35vmin;
+  height: 7vmin;
+  border-radius: 5vmin;
+  border-style: none;
   font-size: 3vmin;
   font-family: consolas;
   text-align: center;
