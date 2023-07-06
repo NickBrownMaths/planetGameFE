@@ -1,4 +1,3 @@
-import CentreReticle from './CentreReticle';
 import PlanetView from './PlanetView'; 
 
 function ObservationWindow(props) {
