@@ -41,7 +41,7 @@ code {
 
 .DataWindowText {
   font-family: consolas;
-  font-size: large;
+  font-size: 2vmin;
   font-weight: bold;
 
   position: absolute;
@@ -78,11 +78,11 @@ code {
 
 .PlanetView {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 1vmin;
+  left: 1vmin;
   bottom: 0;
   right: 0;
-  margin: 0px
+  margin: 0;
 }
 
 
@@ -125,7 +125,7 @@ code {
   width: 7vmin;
   height: 7vmin;
   border-radius: 1vmin;
-  font-size: xx-large;
+  font-size: 3vmin;
 }
 
 .DirectionPad, .ViewsPad {
@@ -157,7 +157,7 @@ code {
   width: 35vmin;
   height: 6.5vmin;
   border-radius: 1vmin;
-  font-size: x-large;
+  font-size: 3vmin;
   font-family: consolas;
   text-align: center;
   border-color: black;
@@ -167,9 +167,9 @@ code {
   width: 36vmin;
   height: 6.75vmin;
   border-radius: 1vmin;
-  font-size: x-large;
+  font-size: 3vmin;
   font-family: consolas;
   text-align: center;
-  padding: 0px;
+  padding: 0;
 } 
 
