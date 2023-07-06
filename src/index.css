@@ -105,7 +105,7 @@ code {
 
 
 .ControlBar {
-  width: 95.5vw;
+  width: calc(100vw - 6vmin);
   height: 15.5vmin;
 
   border-style: solid;
@@ -142,7 +142,7 @@ code {
 .ViewsPad {
   grid-template-columns: 7vmin 7vmin;
   position: absolute;
-  left: 88.5vmin;
+  left: 108.5vmin;
 }
 
 .SeedForm {
@@ -150,12 +150,12 @@ code {
   left: 53vmin;
   display: grid;
   row-gap: 0.5vmin;
-  grid-template-columns: 36vmin;
+  grid-template-columns: 56vmin;
   position: absolute;
 }
 
 .SeedInput {
-  width: 35vmin;
+  width: 55vmin;
   height: 7vmin;
   border-radius: 1vmin;
   font-size: 3vmin;
@@ -165,10 +165,11 @@ code {
   color: rgb(27, 90, 29);
   background-color: rgb(10, 22, 9);
   border-style: none;
+  padding: 0;
 }
 
 .SeedSubmit {
-  width: 35vmin;
+  width: 55vmin;
   height: 7vmin;
   border-radius: 5vmin;
   border-style: none;
