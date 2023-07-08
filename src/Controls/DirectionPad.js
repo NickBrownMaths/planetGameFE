@@ -20,21 +20,21 @@ function DirectionPad(props) {
 
   return (
     <div className="DirectionPad">
-      <ControlButton onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, rot3)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot3), props.planetVertices)); }} text={'\u21BB'} />
-      <ControlButton onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, iRot1)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, iRot3), props.planetVertices)); }} text={'\u2191'} />
-      <ControlButton onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, iRot3)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot3), props.planetVertices)); }} text={'\u21BA'} />
-      <ControlButton />
-      <ControlButton onClick={() => { props.setScale(Math.min(props.scale * 2, 32)) }} text={'+'} />
-      <ControlButton />
-      <ControlButton onClick={() => { props.setSpeed(Math.min(props.speed * 2, 8)) }} text={'>>'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, rot3)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot3), props.planetVertices)); }} text={'\u21BB'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, iRot1)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, iRot3), props.planetVertices)); }} text={'\u2191'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, iRot3)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot3), props.planetVertices)); }} text={'\u21BA'} />
+      <ControlButton buttonType={'ControlButton'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setScale(Math.min(props.scale * 2, 32)) }} text={'+'} />
+      <ControlButton buttonType={'ControlButton'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setSpeed(Math.min(props.speed * 2, 8)) }} text={'>>'} />
 
-      <ControlButton onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, iRot2)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, iRot2), props.planetVertices)); }} text={'\u2190'} />
-      <ControlButton onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, rot1)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot1), props.planetVertices)); }} text={'\u2193'} />
-      <ControlButton onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, rot2)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot2), props.planetVertices)); }} text={'\u2192'} />
-      <ControlButton />
-      <ControlButton onClick={() => { props.setScale(Math.max(props.scale / 2, 0.0625)) }} text={'-'} />
-      <ControlButton />
-      <ControlButton onClick={() => { props.setSpeed(Math.max(props.speed / 2, 0.03125)) }} text={'>'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, iRot2)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, iRot2), props.planetVertices)); }} text={'\u2190'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, rot1)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot1), props.planetVertices)); }} text={'\u2193'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setRotation(matrixMatrixMultiply4(props.rotation, rot2)); props.setLookingAt(whatCellAmILookingAt(matrixMatrixMultiply4(props.rotation, rot2), props.planetVertices)); }} text={'\u2192'} />
+      <ControlButton buttonType={'ControlButton'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setScale(Math.max(props.scale / 2, 0.0625)) }} text={'-'} />
+      <ControlButton buttonType={'ControlButton'} />
+      <ControlButton buttonType={'ControlButton'} onClick={() => { props.setSpeed(Math.max(props.speed / 2, 0.03125)) }} text={'>'} />
     </div>
   )
 }

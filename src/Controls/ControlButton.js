@@ -1,6 +1,6 @@
 function ControlButton(props) {
   return (
-    <button className='ControlButton' onClick={props.onClick}>
+    <button className={props.buttonType} onClick={props.onClick}>
       {props.text}
     </button>
   )

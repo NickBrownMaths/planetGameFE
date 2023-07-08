@@ -120,7 +120,7 @@ function App() {
         displayElevation={displayElevation}
         displayOnshore={displayOnshore}
         localMinerals={planetResources.minerals[lookingAt]}
-        //localPlants={planetResources.plants[lookingAt]}
+        localPlants={planetResources.plants[lookingAt]}
         //localAnimals={planetResources.animals[lookingAt]}
         reticlevertexdata={reticleVertexData}
         reticlecolourdata={reticleColourData}

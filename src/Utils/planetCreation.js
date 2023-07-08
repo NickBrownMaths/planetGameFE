@@ -1,4 +1,6 @@
 import MersenneTwister from "mersenne-twister";
+import { LIFE, generatePlants } from "./resources";
+import { camelize } from "./WordGen";
 
 export function generateIcosahedron() {
   // Generate Icosahedron data
@@ -679,7 +681,6 @@ export function generatePlanet(seed, n) {
       else if (globalBiome[currentRiverCell] === 'polar')/*                */ { globalBiome[currentRiverCell] = 'glacier' }
       else if (globalBiome[currentRiverCell] === 'tundra')/*               */ { globalBiome[currentRiverCell] = 'glacier' }
       else if (globalBiome[currentRiverCell] === 'alpine')/*               */ { globalBiome[currentRiverCell] = 'glacier' }
-      //else if (globalBiome[currentRiverCell] === 'river')/*                */ { globalBiome[currentRiverCell] = 'river' }
       else if (globalBiome[currentRiverCell] === 'grassland')/*            */ { globalBiome[currentRiverCell] = 'river' }
       else if (globalBiome[currentRiverCell] === 'marsh')/*                */ { globalBiome[currentRiverCell] = 'river' }
       else if (globalBiome[currentRiverCell] === 'bog')/*                  */ { globalBiome[currentRiverCell] = 'river' }
@@ -688,7 +689,6 @@ export function generatePlanet(seed, n) {
       else if (globalBiome[currentRiverCell] === 'montane')/*              */ { globalBiome[currentRiverCell] = 'river' }
       else if (globalBiome[currentRiverCell] === 'boreal forest')/*        */ { globalBiome[currentRiverCell] = 'river' }
       else if (globalBiome[currentRiverCell] === 'temperate rainforest')/* */ { globalBiome[currentRiverCell] = 'river' }
-      //else if (globalBiome[currentRiverCell] === 'tropical river')/*       */ { globalBiome[currentRiverCell] = 'tropical river' }
       else if (globalBiome[currentRiverCell] === 'desert grassland')/*     */ { globalBiome[currentRiverCell] = 'tropical river' }
       else if (globalBiome[currentRiverCell] === 'savanna')/*              */ { globalBiome[currentRiverCell] = 'tropical river' }
       else if (globalBiome[currentRiverCell] === 'chaparral')/*            */ { globalBiome[currentRiverCell] = 'tropical river' }
@@ -697,33 +697,12 @@ export function generatePlanet(seed, n) {
       else if (globalBiome[currentRiverCell] === 'encinal')/*              */ { globalBiome[currentRiverCell] = 'tropical river' }
       else if (globalBiome[currentRiverCell] === 'cloud forest')/*         */ { globalBiome[currentRiverCell] = 'tropical river' }
       else if (globalBiome[currentRiverCell] === 'tropical rainforest')/*  */ { globalBiome[currentRiverCell] = 'tropical river' }
-      //else if (globalBiome[currentRiverCell] === 'river fjord')/*          */ { globalBiome[currentRiverCell] = 'river fjord' }
       else if (globalBiome[currentRiverCell] === 'fjord')/*                */ { globalBiome[currentRiverCell] = 'river fjord' }
-      //else if (globalBiome[currentRiverCell] === 'delta')/*                */ { globalBiome[currentRiverCell] = 'delta' }
       else if (globalBiome[currentRiverCell] === 'beach')/*                */ { globalBiome[currentRiverCell] = 'delta' }
       else if (globalBiome[currentRiverCell] === 'cold beach')/*           */ { globalBiome[currentRiverCell] = 'delta' }
-      //else if (globalBiome[currentRiverCell] === 'tropical delta')/*       */ { globalBiome[currentRiverCell] = 'tropical delta' }
       else if (globalBiome[currentRiverCell] === 'tropical beach')/*       */ { globalBiome[currentRiverCell] = 'tropical delta' }
-      //else if (globalBiome[currentRiverCell] === 'waterfall')/*            */ { globalBiome[currentRiverCell] = 'waterfall' }
       else if (globalBiome[currentRiverCell] === 'cliff')/*                */ { globalBiome[currentRiverCell] = 'waterfall' }
-      //else if (globalBiome[currentRiverCell] === 'tropical waterfall')/*   */ { globalBiome[currentRiverCell] = 'tropical waterfall' }
       else if (globalBiome[currentRiverCell] === 'tropical cliff')/*       */ { globalBiome[currentRiverCell] = 'tropical waterfall' }
-      //else if (globalBiome[currentRiverCell] === 'glacier valley')/*       */ { globalBiome[currentRiverCell] = 'glacier valley' }
-      //else if (globalBiome[currentRiverCell] === 'river valley')/*         */ { globalBiome[currentRiverCell] = 'river valley' }
-      //else if (globalBiome[currentRiverCell] === 'tropical river valley')/**/ { globalBiome[currentRiverCell] = 'tropical river valley' }
-      //else if (globalBiome[currentRiverCell] === 'volcano')/*              */ { globalBiome[currentRiverCell] = 'volcano' }
-      //else if (globalBiome[currentRiverCell] === 'iceberg')/*              */ { globalBiome[currentRiverCell] = 'iceberg' }
-      //else if (globalBiome[currentRiverCell] === 'salt marsh')/*           */ { globalBiome[currentRiverCell] = 'salt marsh' }
-      //else if (globalBiome[currentRiverCell] === 'mangrove')/*             */ { globalBiome[currentRiverCell] = 'mangrove' }
-      //else if (globalBiome[currentRiverCell] === 'tropical islet')/*       */ { globalBiome[currentRiverCell] = 'tropical islet' }
-      //else if (globalBiome[currentRiverCell] === 'swamp')/*                */ { globalBiome[currentRiverCell] = 'swamp' }
-      //else if (globalBiome[currentRiverCell] === 'lake')/*                 */ { globalBiome[currentRiverCell] = 'lake' }
-      //else if (globalBiome[currentRiverCell] === 'tropical lake')/*        */ { globalBiome[currentRiverCell] = 'tropical lake' }
-      //else if (globalBiome[currentRiverCell] === 'shallows')/*             */ { globalBiome[currentRiverCell] = 'shallows' }
-      //else if (globalBiome[currentRiverCell] === 'islet')/*                */ { globalBiome[currentRiverCell] = 'islet' }
-      //else if (globalBiome[currentRiverCell] === 'ocean')/*                */ { globalBiome[currentRiverCell] = 'ocean' }
-      //else if (globalBiome[currentRiverCell] === 'ocean trench')/*               */ { globalBiome[currentRiverCell] = 'ocean trench' }
-      //else if (globalBiome[currentRiverCell] === 'coral')/*                */ { globalBiome[currentRiverCell] = 'coral' }
 
       if (globalElevation[currentRiverCell] > globalElevation[prevRiverCell]) {
         /* */if (globalBiome[currentRiverCell] === 'glacier')/*       */ { globalBiome[currentRiverCell] = 'glacier valley' }
@@ -839,15 +818,14 @@ export function generatePlanet(seed, n) {
 }
 
 export function generatePlanetResources(seed, globalBiome, cosmosMats) {
-  // Create planetMaterials from cosmosMaterials
   let RNG = new MersenneTwister(seed);
 
+  // Create global minerals list from cosmos minerals
   let planetIgn = [];
   let planetSed = [];
   let planetMet = [];
   let planetDirt = [];
   let planetPrecMet = [];
-
   let numMats = 30 + Math.floor(RNG.random() * 15);
   for (let i = 0; i < numMats; i++) { planetIgn.push(cosmosMats.IGN_ROCKS[Math.floor(RNG.random() * cosmosMats.IGN_ROCKS.length)]); }
   numMats = 30 + Math.floor(RNG.random() * 15);
@@ -859,8 +837,171 @@ export function generatePlanetResources(seed, globalBiome, cosmosMats) {
   numMats = 5 + Math.floor(RNG.random() * 2);
   for (let i = 0; i < numMats; i++) { planetPrecMet.push(cosmosMats.PREC_METS[Math.floor(RNG.random() * cosmosMats.PREC_METS.length)]); }
 
+  // Create global plants list
+  let globalPlantsList = {}
+  globalPlantsList.polar = [];
+  globalPlantsList.polar.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.polar.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.polar.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.tundra = [];
+  globalPlantsList.tundra.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 5));
+  globalPlantsList.tundra.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 10));
+  globalPlantsList.tundra.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.tundra.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.borealForest = [];
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 5));
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 25));
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 15));
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.borealForest.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
+  globalPlantsList.temperateForest = [];
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 20));
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 10));
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 20));
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 15));
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 15));
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 15));
+  globalPlantsList.temperateForest.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 15));
+  globalPlantsList.grassland = [];
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 5));
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 10));
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.SUCCULENT, RNG.random_int(), 5));
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 5));
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.grassland.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
+  globalPlantsList.desert = [];
+  globalPlantsList.desert.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.desert.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.desert.push(...generatePlants(LIFE.PLANT.SUCCULENT, RNG.random_int(), 15));
+  globalPlantsList.savanna = [];
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 10));
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 10));
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.SUCCULENT, RNG.random_int(), 0));
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 5));
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 10));
+  globalPlantsList.savanna.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
+  globalPlantsList.tropicalRainforest = [];
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 25));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 25));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 15));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.SUCCULENT, RNG.random_int(), 10));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 15));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 10));
+  globalPlantsList.tropicalRainforest.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 25));
+  globalPlantsList.nival = globalPlantsList.polar;
+  globalPlantsList.alpine = globalPlantsList.tundra;
+  globalPlantsList.montane = globalPlantsList.borealForest;
+  globalPlantsList.volcano = [];
+  globalPlantsList.encinal = globalPlantsList.temperateForest;
+  globalPlantsList.desertGrassland = globalPlantsList.savanna;
+  globalPlantsList.cloudForest = globalPlantsList.tropicalRainforest;
+  globalPlantsList.ocean = [];
+  globalPlantsList.ocean.push(...generatePlants(LIFE.PLANT.SEAWEED, RNG.random_int(), 25));
+  globalPlantsList.ocean.push(...generatePlants(LIFE.PLANT.SEAGRASS, RNG.random_int(), 25));
+  globalPlantsList.shallows = globalPlantsList.ocean;
+  globalPlantsList.oceanTrench = globalPlantsList.ocean;
+  globalPlantsList.coral = globalPlantsList.ocean;
+  globalPlantsList.tropicalIslet = globalPlantsList.tropicalRainforest;
+  globalPlantsList.islet = globalPlantsList.temperateForest;
+  globalPlantsList.iceberg = [];
+  globalPlantsList.tropicalBeach = globalPlantsList.ocean;
+  globalPlantsList.beach = globalPlantsList.ocean;
+  globalPlantsList.coldBeach = [];
+  globalPlantsList.tropicalCliff = globalPlantsList.tropicalRainforest;
+  globalPlantsList.cliff = globalPlantsList.temperateForest;
+  globalPlantsList.fjord = globalPlantsList.borealForest;
+  globalPlantsList.temperateRainforest = globalPlantsList.temperateForest;
+  globalPlantsList.chaparral = [];
+  globalPlantsList.chaparral.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 5));
+  globalPlantsList.chaparral.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 15));
+  globalPlantsList.chaparral.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.chaparral.push(...generatePlants(LIFE.PLANT.SUCCULENT, RNG.random_int(), 10));
+  globalPlantsList.chaparral.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.chaparral.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
+  globalPlantsList.saltMarsh = [];
+  globalPlantsList.saltMarsh.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.saltMarsh.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.saltMarsh.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.saltMarsh.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.saltMarsh.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 10));
+  globalPlantsList.mangrove = [];
+  globalPlantsList.mangrove.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 15));
+  globalPlantsList.mangrove.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 5));
+  globalPlantsList.mangrove.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.mangrove.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 5));
+  globalPlantsList.mangrove.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.glacier = globalPlantsList.borealForest;
+  globalPlantsList.river = globalPlantsList.temperateForest;
+  globalPlantsList.river.push(...generatePlants(LIFE.PLANT.SEAWEED, RNG.random_int(), 5));
+  globalPlantsList.river.push(...generatePlants(LIFE.PLANT.SEAGRASS, RNG.random_int(), 5));
+  globalPlantsList.tropicalRiver = globalPlantsList.tropicalRainforest;
+  globalPlantsList.tropicalRiver.push(...generatePlants(LIFE.PLANT.SEAWEED, RNG.random_int(), 5));
+  globalPlantsList.tropicalRiver.push(...generatePlants(LIFE.PLANT.SEAGRASS, RNG.random_int(), 10));
+  globalPlantsList.riverFjord = globalPlantsList.borealForest;
+  globalPlantsList.waterfall = globalPlantsList.river;
+  globalPlantsList.tropicalWaterfall = globalPlantsList.tropicalRiver;
+  globalPlantsList.glacierValley = globalPlantsList.borealForest;
+  globalPlantsList.riverValley = globalPlantsList.river;
+  globalPlantsList.tropicalRiverValley = globalPlantsList.tropicalRiver;
+  globalPlantsList.delta = globalPlantsList.river;
+  globalPlantsList.tropicalDelta = globalPlantsList.tropicalRiver;
+  globalPlantsList.lake = globalPlantsList.river;
+  globalPlantsList.tropicalLake = globalPlantsList.tropicalRiver;
+  globalPlantsList.tropicalSwamp = [];
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 20));
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 10));
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 10));
+  globalPlantsList.tropicalSwamp.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 10));
+  globalPlantsList.swamp = [];
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 20));
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.TREE.SOFTWOOD, RNG.random_int(), 10));
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 10));
+  globalPlantsList.swamp.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 10));
+  globalPlantsList.marsh = [];
+  globalPlantsList.marsh.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.marsh.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 10));
+  globalPlantsList.marsh.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 10));
+  globalPlantsList.marsh.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.marsh.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 10));
+  globalPlantsList.marsh.push(...generatePlants(LIFE.PLANT.SEAGRASS, RNG.random_int(), 5));
+  globalPlantsList.bog = [];
+  globalPlantsList.bog.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.bog.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.bog.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 20));
+  globalPlantsList.bog.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.bog.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
+  globalPlantsList.bog.push(...generatePlants(LIFE.PLANT.SEAGRASS, RNG.random_int(), 5));
+  globalPlantsList.fen = [];
+  globalPlantsList.fen.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.fen.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 15));
+  globalPlantsList.fen.push(...generatePlants(LIFE.PLANT.MOSS, RNG.random_int(), 5));
+  globalPlantsList.fen.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.fen.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 10));
+  globalPlantsList.oasis = [];
+  globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.TREE.HARDWOOD, RNG.random_int(), 5));
+  globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.SHRUB, RNG.random_int(), 5));
+  globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.GRASS, RNG.random_int(), 5));
+  globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.SUCCULENT, RNG.random_int(), 10));
+  globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
+  globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
+
+  // Assign resources to regions
   let globalMinerals = [];
+  let globalPlants = [];
+  let globalAnimals = [];
   for (let i = 0; i < globalBiome.length; i++) {
+    // Minerals
     globalMinerals.push([]);
     numMats = 1 + Math.floor(RNG.random() * 3);
     for (let j = 0; j < numMats; j++) {
@@ -892,13 +1033,35 @@ export function generatePlanetResources(seed, globalBiome, cosmosMats) {
       if (globalMinerals[i].filter(e => e.NAME === planetPrecMet[rand].NAME).length > 0) { }
       else { globalMinerals[i].push(planetPrecMet[rand]); }
     }
+
+    globalPlants.push([]);
+    let key = camelize(globalBiome[i]);
+    let numPlants = Math.floor(globalPlantsList[key].length / 5);
+    for (let j = 0; j < numPlants; j++) {
+      let rand = Math.floor(RNG.random() * globalPlantsList[key].length);
+      if (globalPlants[i].filter(e => e.NAME === globalPlantsList[key][rand].NAME).length > 0) { }
+      else { globalPlants[i].push(globalPlantsList[key][rand]); }
+    }
+    
+
   }
 
 
   let globalResources = {}
   globalResources.minerals = globalMinerals;
-  
+  globalResources.plants = globalPlants;
+  globalResources.animals = globalAnimals;
   return globalResources;
+}
+
+export function generateLocalPlants(seed, globalResources, biome, lookingAt) {
+  
+
+
+
+
+
+
 }
 
 export function whatCellAmILookingAt(rotation, vertices) {

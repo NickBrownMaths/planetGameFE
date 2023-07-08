@@ -37,6 +37,8 @@ code {
 
   position: relative;
 
+  overflow-y: auto;
+
 }
 
 .DataWindowText {
