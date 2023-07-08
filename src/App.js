@@ -20,7 +20,8 @@ function App() {
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
   const [lookingAt, setLookingAt] = useState(0);
-  const [planetDisplayType, setPlanetDisplayType] = useState('natural')
+  const [planetMapDisplayType, setPlanetMapDisplayType] = useState('natural')
+  const [planetResDisplayType, setPlanetResDisplayType] = useState('')
 
   const [planet, setPlanet] = useState([[0], [0]]);
   const [planetColours, setPlanetColours] = useState([0, 0]);
@@ -49,7 +50,7 @@ function App() {
     setPlanet(generatePlanet(planetSeed, 100));
     let wordGen = new WordGen(planetSeed);
     setPlanetName(wordGen.createName());
-    setPlanetDisplayType('natural');
+    setPlanetMapDisplayType('natural');
     setRotation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
     setScale(1);
   }, [planetSeed]);
@@ -57,13 +58,13 @@ function App() {
   useEffect(() => {
     if (planet[2]) {
       if (planet[2].length > 0) {
-        /* */if (planetDisplayType === 'natural')/*  */ { setPlanetColours(naturalColours(planet[2], planetSeed)); }
-        else if (planetDisplayType === 'biome')/*    */ { setPlanetColours(biomeColours(planet[2])); }
-        else if (planetDisplayType === 'elevation')/**/ { setPlanetColours(elevationColours(planet[3])); }
-        else if (planetDisplayType === 'onshore')/*  */ { setPlanetColours(onshoreColours(planet[4])); }
+        /* */if (planetMapDisplayType === 'natural')/*  */ { setPlanetColours(naturalColours(planet[2], planetSeed)); }
+        else if (planetMapDisplayType === 'biome')/*    */ { setPlanetColours(biomeColours(planet[2])); }
+        else if (planetMapDisplayType === 'elevation')/**/ { setPlanetColours(elevationColours(planet[3])); }
+        else if (planetMapDisplayType === 'onshore')/*  */ { setPlanetColours(onshoreColours(planet[4])); }
       }
     }
-  }, [planet, planetDisplayType]);
+  }, [planet, planetMapDisplayType]);
 
   useEffect(() => {
     if (planet[2]) {
@@ -73,7 +74,7 @@ function App() {
         setPlanetBiomes(planet[2]);
         setPlanetElevation(planet[3]);
         setPlanetOnshoreDist(planet[4]);
-        setPlanetDisplayType('natural');
+        setPlanetMapDisplayType('natural');
         setPlanetResources(applyCosmosResources(planetSeed, planet[2], cosmosMaterials));
       }
     }
@@ -114,7 +115,7 @@ function App() {
         vertexdata={planetVertices}
         colourdata={planetColours}
         planetName={planetName}
-        planetDisplayType={planetDisplayType}
+        planetMapDisplayType={planetMapDisplayType}
         displayBiome={displayBiome}
         displayElevation={displayElevation}
         displayOnshore={displayOnshore}
@@ -131,7 +132,7 @@ function App() {
         setScale={setScale} scale={scale}
         setLookingAt={setLookingAt}
         planetVertices={planetVertices}
-        changeDisplay={setPlanetDisplayType}
+        changeMapDisplay={setPlanetMapDisplayType}
       />
     </div>
   );

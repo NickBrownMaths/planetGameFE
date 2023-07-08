@@ -19,7 +19,7 @@ function ControlBar(props) {
         planetSeed={props.planetSeed}
       />
       <ViewsPad
-      changeDisplay={props.changeDisplay}
+        changeMapDisplay={props.changeMapDisplay}
       />
     </div>
   )
