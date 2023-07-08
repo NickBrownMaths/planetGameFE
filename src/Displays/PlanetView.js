@@ -8,7 +8,7 @@ function PlanetView(props) {
     <div className='PlanetView'>
       <PlanetCanvas
         draw={draw}
-        transformMatrix={props.transformMatrix}
+        rotation={props.rotation}
         scale={props.scale}
         vertexdata={props.vertexdata}
         colourdata={props.colourdata}
@@ -17,7 +17,7 @@ function PlanetView(props) {
       />
       < ReticleCanvas
         draw={draw}
-        transformMatrix={props.transformMatrix}
+        rotation={props.rotation}
         scale={props.scale}
         vertexdata={props.reticlevertexdata}
         colourdata={props.reticlecolourdata}

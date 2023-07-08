@@ -18,7 +18,7 @@ function App() {
 
   const [speed, setSpeed] = useState(1);
   const [scale, setScale] = useState(1);
-  const [transformMatrix, setTransformMatrix] = useState([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
+  const [rotation, setRotation] = useState([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
   const [lookingAt, setLookingAt] = useState(0);
   const [planetDisplayType, setPlanetDisplayType] = useState('natural')
 
@@ -50,7 +50,7 @@ function App() {
     let wordGen = new WordGen(planetSeed);
     setPlanetName(wordGen.createName());
     setPlanetDisplayType('natural');
-    setTransformMatrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
+    setRotation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1],]);
     setScale(1);
   }, [planetSeed]);
 
@@ -99,13 +99,15 @@ function App() {
         setDisplayOnshore(planetOnshoreDist[lookingAt])
       }
     }
-  }, [transformMatrix]);
+  }, [rotation]);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
   return (
     <div className="App">
       <DisplayWindows
-        transformMatrix={transformMatrix}
+        rotation={rotation}
         planetSeed={planetSeed}
         scale={scale}
         speed={speed}
@@ -123,8 +125,8 @@ function App() {
       <ControlBar
         planetSeed={planetSeed}
         setPlanetSeed={setPlanetSeed}
-        setTransformMatrix={setTransformMatrix}
-        transformMatrix={transformMatrix}
+        setRotation={setRotation}
+        rotation={rotation}
         setSpeed={setSpeed} speed={speed}
         setScale={setScale} scale={scale}
         setLookingAt={setLookingAt}

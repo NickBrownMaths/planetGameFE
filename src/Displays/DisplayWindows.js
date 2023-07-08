@@ -8,7 +8,7 @@ function DisplayWindows(props) {
         theta1={props.theta1}
         theta2={props.theta2}
         theta3={props.theta3}
-        transformMatrix={props.transformMatrix}
+        rotation={props.rotation}
         scale={props.scale}
         vertexdata={props.vertexdata}
         colourdata={props.colourdata}

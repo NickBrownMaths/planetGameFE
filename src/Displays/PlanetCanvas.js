@@ -69,19 +69,19 @@ const PlanetCanvas = props => {
       transform: gl.getUniformLocation(program, `transform`),
     }
 
-    let locTransformMatrix = [[0, 0, 0,], [0, 0, 0,], [0, 0, 0,],];
+    let locRotation = [[0, 0, 0,], [0, 0, 0,], [0, 0, 0,],];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        locTransformMatrix[i][j] = props.transformMatrix[i][j];
+        locRotation[i][j] = props.rotation[i][j];
       }
     }
 
-    locTransformMatrix = scalarMatrixMultiply3(props.scale, locTransformMatrix);
-    locTransformMatrix[0].push(0);
-    locTransformMatrix[1].push(0);
-    locTransformMatrix[2].push(0);
-    locTransformMatrix.push([0, 0, props.scale, 1]);
-    let transform = flatten(locTransformMatrix);
+    locRotation = scalarMatrixMultiply3(props.scale, locRotation);
+    locRotation[0].push(0);
+    locRotation[1].push(0);
+    locRotation[2].push(0);
+    locRotation.push([0, 0, props.scale, 1]);
+    let transform = flatten(locRotation);
 
     gl.uniformMatrix4fv(uniformLocations.transform, false, transform);
     gl.drawArrays(gl.TRIANGLES, 0, props.vertexdata.length / 3);

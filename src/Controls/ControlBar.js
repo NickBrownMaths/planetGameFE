@@ -7,8 +7,8 @@ function ControlBar(props) {
   return (
     <div className='ControlBar'>
       <DirectionPad
-        setTransformMatrix={props.setTransformMatrix}
-        transformMatrix={props.transformMatrix}
+        setRotation={props.setRotation}
+        rotation={props.rotation}
         setScale={props.setScale} scale={props.scale}
         setSpeed={props.setSpeed} speed={props.speed}
         setLookingAt={props.setLookingAt}
