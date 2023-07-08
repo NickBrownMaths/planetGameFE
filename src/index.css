@@ -131,6 +131,15 @@ code {
   border-style: none;
 }
 
+.infoButton{
+  width: 2vmin;
+  height: 2vmin;
+  font-size: 1.5vmin;
+  border-radius: 2vmin;
+  border-style: none;
+  background-color: rgb(27, 90, 29);
+}
+
 .DirectionPad, .ViewsPad {
   display: grid;
   column-gap: 0.5vmin;

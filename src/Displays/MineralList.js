@@ -1,8 +1,9 @@
+import ControlButton from "../Controls/ControlButton";
 import { generateMaterialBearingList } from "../Utils/resources";
 
 function MineralList(props) {
 
-  let text = 'This Region contains:'
+  let text = 'This Region contains: Minerals:'
 
   if (props.localMinerals.length > 0) {
     return (
@@ -11,7 +12,7 @@ function MineralList(props) {
         <ul>
           {
             props.localMinerals.map((mineral, index) => (
-              <li key={index}> {generateMaterialBearingList(mineral)} </li>
+              <li key={index}> {generateMaterialBearingList(mineral)} <ControlButton buttonType ='infoButton' text = '?' onClick={() => {}}/> </li>
             ))
           }
         </ul >
