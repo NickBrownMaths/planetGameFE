@@ -1,5 +1,6 @@
 import MersenneTwister from "mersenne-twister"
 import WordGen from "./WordGen";
+import { hasPointerEvents } from "@testing-library/user-event/dist/utils";
 
 export const MATERIAL = {
   ROCK: {
@@ -17,9 +18,71 @@ export const MATERIAL = {
     PRECIOUS: 'precious metal',
     ALLOY: 'metal alloy',
   },
-  WOOD: {
-    HARDWOOD: 'hardwood',
-    SOFTWOOD: 'softwood',
+  PLANTPART: {
+    WOOD: {
+      HARDWOOD: 'hardwood',
+      SOFTWOOD: 'softwood',
+    },
+    LEAF: {
+      LEAF: "leaf",
+      NEEDLE: "needle",
+    },
+    ROOT: {
+      TAP: "taproot",
+      FIBROUS: "fibrous root",
+    },
+    STEM: {
+      STEM: "stem",
+      UNDERGROUND: {
+        BULB: "bulb",
+        TUBER: "tuber",
+        ROOTSTALK: "rootstalk"
+      },
+      AERIAL: {
+        THORN: "thorn",
+        TENDRIL: "tendril",
+      },
+    },
+    FLOWER: "flower",
+    CONE: "cone",
+  },
+  ANIMALPART: {
+    BONE: "bone",
+    BLOOD: "blood",
+    SKIN: "skin",
+    MUSCLE: "muscle",
+    FAT: "fat",
+    HAIR: "hair",
+    SENSOR: {
+      EYE: "eye",
+      EAR: "ear",
+      NOSE: "nose",
+      TONGUE: "tongue",
+      TOUCH: "touch",
+    },
+    WEAPONS: {
+      TOOTH: "tooth",
+      CLAW: "claw",
+      HORN: "horn",
+    },
+    ORGAN: {
+      BRAIN: "brain",
+      HEART: "heart",
+      LUNG: "lung",
+      STOMACH: "stomach",
+      LIVER: "liver",
+      KIDNEY: "kidney",
+      INTESTINE: "intestine",
+      GIZZARD: "gizzard",
+    },
+    LIMB: {
+      HEAD: "head",
+      ARM: "arm",
+      LEG: "leg",
+      WING: "wing",
+      TENTACLE: "tentacle",
+      TAIL: "tail",
+    },
   },
   TEXTILE: {
     FIBRE: 'fibre',
@@ -31,6 +94,7 @@ export const MATERIAL = {
   DIRT: 'dirt',
   RUBBER: 'rubber',
 }
+
 
 export function generateMaterial(type, seed) {
   let RNG = new MersenneTwister(seed);
@@ -45,24 +109,24 @@ export function generateMaterial(type, seed) {
   let dnsA = 0;
   let dnsR = 0;
 
-  /* */if (type === MATERIAL.CERAMIC)/*              */ { strA = 3; strR = 2; hrdA = 8; hrdR = 2; tghA = 3; tghR = 1; dnsA = 4; dnsR = 1; }
-  else if (type === MATERIAL.DIRT)/*                 */ { strA = 0; strR = 0; hrdA = 0; hrdR = 0; tghA = 0; tghR = 0; dnsA = 3; dnsR = 2; }
-  else if (type === MATERIAL.GLASS)/*                */ { strA = 5; strR = 2; hrdA = 7; hrdR = 1; tghA = 3; tghR = 1; dnsA = 4; dnsR = 2; }
-  else if (type === MATERIAL.METAL.ALLOY)/*          */ { strA = 9; strR = 8; hrdA = 7; hrdR = 13; tghA = 10; tghR = 6; dnsA = 10; dnsR = 9; }
-  else if (type === MATERIAL.METAL.COMMON)/*         */ { strA = 9; strR = 4; hrdA = 6; hrdR = 4; tghA = 6; tghR = 3; dnsA = 8; dnsR = 5; }
-  else if (type === MATERIAL.METAL.PRECIOUS)/*       */ { strA = 7; strR = 4; hrdA = 5; hrdR = 4; tghA = 10; tghR = 3; dnsA = 16; dnsR = 4; }
-  else if (type === MATERIAL.METAL.UNCOMMON)/*       */ { strA = 8; strR = 4; hrdA = 7; hrdR = 4; tghA = 8; tghR = 3; dnsA = 12; dnsR = 5; }
-  else if (type === MATERIAL.ROCK.GEM.PRECIOUS)/*    */ { strA = 15; strR = 5; hrdA = 17; hrdR = 3; tghA = 1; tghR = 1; dnsA = 6; dnsR = 2; }
-  else if (type === MATERIAL.ROCK.GEM.SEMIPRECIOUS)/**/ { strA = 12; strR = 5; hrdA = 15; hrdR = 3; tghA = 2; tghR = 2; dnsA = 7; dnsR = 3; }
-  else if (type === MATERIAL.ROCK.IGNEOUS)/*         */ { strA = 6; strR = 3; hrdA = 10; hrdR = 3; tghA = 4; tghR = 2; dnsA = 5; dnsR = 2; }
-  else if (type === MATERIAL.ROCK.METAMORPHIC)/*     */ { strA = 5; strR = 3; hrdA = 9; hrdR = 3; tghA = 6; tghR = 2; dnsA = 5; dnsR = 2; }
-  else if (type === MATERIAL.ROCK.SEDIMENTARY)/*     */ { strA = 7; strR = 3; hrdA = 8; hrdR = 3; tghA = 5; tghR = 2; dnsA = 5; dnsR = 2; }
-  else if (type === MATERIAL.RUBBER)/*               */ { strA = 1; strR = 1; hrdA = 1; hrdR = 1; tghA = 18; tghR = 2; dnsA = 3; dnsR = 1; }
-  else if (type === MATERIAL.TEXTILE.FIBRE)/*        */ { strA = 3; strR = 2; hrdA = 1; hrdR = 1; tghA = 12; tghR = 1; dnsA = 3; dnsR = 2; }
-  else if (type === MATERIAL.TEXTILE.ROPE)/*         */ { strA = 4; strR = 2; hrdA = 1; hrdR = 1; tghA = 12; tghR = 2; dnsA = 3; dnsR = 1; }
-  else if (type === MATERIAL.TEXTILE.SHEET)/*        */ { strA = 3; strR = 2; hrdA = 1; hrdR = 1; tghA = 12; tghR = 3; dnsA = 3; dnsR = 3; }
-  else if (type === MATERIAL.WOOD.HARDWOOD)/*        */ { strA = 3; strR = 1; hrdA = 3; hrdR = 1; tghA = 12; tghR = 4; dnsA = 2; dnsR = 1; }
-  else if (type === MATERIAL.WOOD.SOFTWOOD)/*        */ { strA = 2; strR = 1; hrdA = 2; hrdR = 1; tghA = 10; tghR = 4; dnsA = 1; dnsR = 1; }
+  /* */if (type === MATERIAL.CERAMIC)/*                */ { strA = 3; strR = 2; hrdA = 8; hrdR = 2; tghA = 3; tghR = 1; dnsA = 4; dnsR = 1; }
+  else if (type === MATERIAL.DIRT)/*                   */ { strA = 0; strR = 0; hrdA = 0; hrdR = 0; tghA = 0; tghR = 0; dnsA = 3; dnsR = 2; }
+  else if (type === MATERIAL.GLASS)/*                  */ { strA = 5; strR = 2; hrdA = 7; hrdR = 1; tghA = 3; tghR = 1; dnsA = 4; dnsR = 2; }
+  else if (type === MATERIAL.METAL.ALLOY)/*            */ { strA = 9; strR = 8; hrdA = 7; hrdR = 13; tghA = 10; tghR = 6; dnsA = 10; dnsR = 9; }
+  else if (type === MATERIAL.METAL.COMMON)/*           */ { strA = 9; strR = 4; hrdA = 6; hrdR = 4; tghA = 6; tghR = 3; dnsA = 8; dnsR = 5; }
+  else if (type === MATERIAL.METAL.PRECIOUS)/*         */ { strA = 7; strR = 4; hrdA = 5; hrdR = 4; tghA = 10; tghR = 3; dnsA = 16; dnsR = 4; }
+  else if (type === MATERIAL.METAL.UNCOMMON)/*         */ { strA = 8; strR = 4; hrdA = 7; hrdR = 4; tghA = 8; tghR = 3; dnsA = 12; dnsR = 5; }
+  else if (type === MATERIAL.ROCK.GEM.PRECIOUS)/*      */ { strA = 15; strR = 5; hrdA = 17; hrdR = 3; tghA = 1; tghR = 1; dnsA = 6; dnsR = 2; }
+  else if (type === MATERIAL.ROCK.GEM.SEMIPRECIOUS)/*  */ { strA = 12; strR = 5; hrdA = 15; hrdR = 3; tghA = 2; tghR = 2; dnsA = 7; dnsR = 3; }
+  else if (type === MATERIAL.ROCK.IGNEOUS)/*           */ { strA = 6; strR = 3; hrdA = 10; hrdR = 3; tghA = 4; tghR = 2; dnsA = 5; dnsR = 2; }
+  else if (type === MATERIAL.ROCK.METAMORPHIC)/*       */ { strA = 5; strR = 3; hrdA = 9; hrdR = 3; tghA = 6; tghR = 2; dnsA = 5; dnsR = 2; }
+  else if (type === MATERIAL.ROCK.SEDIMENTARY)/*       */ { strA = 7; strR = 3; hrdA = 8; hrdR = 3; tghA = 5; tghR = 2; dnsA = 5; dnsR = 2; }
+  else if (type === MATERIAL.RUBBER)/*                 */ { strA = 1; strR = 1; hrdA = 1; hrdR = 1; tghA = 18; tghR = 2; dnsA = 3; dnsR = 1; }
+  else if (type === MATERIAL.TEXTILE.FIBRE)/*          */ { strA = 3; strR = 2; hrdA = 1; hrdR = 1; tghA = 12; tghR = 1; dnsA = 3; dnsR = 2; }
+  else if (type === MATERIAL.TEXTILE.ROPE)/*           */ { strA = 4; strR = 2; hrdA = 1; hrdR = 1; tghA = 12; tghR = 2; dnsA = 3; dnsR = 1; }
+  else if (type === MATERIAL.TEXTILE.SHEET)/*          */ { strA = 3; strR = 2; hrdA = 1; hrdR = 1; tghA = 12; tghR = 3; dnsA = 3; dnsR = 3; }
+  else if (type === MATERIAL.PLANTPART.WOOD.HARDWOOD)/**/ { strA = 3; strR = 1; hrdA = 3; hrdR = 1; tghA = 12; tghR = 4; dnsA = 2; dnsR = 1; }
+  else if (type === MATERIAL.PLANTPART.WOOD.SOFTWOOD)/**/ { strA = 2; strR = 1; hrdA = 2; hrdR = 1; tghA = 10; tghR = 4; dnsA = 1; dnsR = 1; }
 
   let str = Math.max(0, strA - strR + Math.floor(rand * (2 * strR + 1)));
   let tgh = Math.max(0, tghA - tghR + Math.floor(rand * (2 * tghR + 1)));

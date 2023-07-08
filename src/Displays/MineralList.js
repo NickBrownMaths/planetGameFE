@@ -6,16 +6,16 @@ function MineralList(props) {
 
   if (props.localResources.length > 0) {
     return (
-      <p>
+      <>
         {text}
-        < ul >
+        <ul>
           {
             props.localResources.map((resource, index) => (
               <li key={index}> {generateMaterialBearingList(resource)} </li>
             ))
           }
         </ul >
-      </p>
+      </>
     )
   }
   else {return (<div />)}
