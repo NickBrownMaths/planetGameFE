@@ -13,13 +13,15 @@ class WordGen {
   end2Cons = ['ft', 'kt', 'lt', 'ld', 'lk', 'lp', 'lb', 'lf', 'lv', 'lch', 'lge', 'lm', 'ls', 'mp', 'mf', 'nt', 'nd', 'nch', 'nge', 'ns', 'nz', 'ng', 'ps', 'pt', 'sk', 'sp', 'st', 'ps', 'ts', 'ks', 'bs', 'ds', 'gs', 'fs', 'ths', 'vs', 'ngs', 'ls', 'pt', 'kt', 'st', 'sht', 'ft', 'cht',];
   end3Cons = ['mpt', 'ngth'];
 
-  createSyllable() {
+  createSyllable(syllableIdx) {
     let syllable = '';
-
     let rand = this.RNG.random();
-    /* */if (rand < 0.01) { syllable = syllable + this.start3Cons[Math.floor(this.RNG.random() * this.start3Cons.length)]; }
-    else if (rand < 0.10) { syllable = syllable + this.start2Cons[Math.floor(this.RNG.random() * this.start2Cons.length)]; }
-    else /*            */ { syllable = syllable + this.start1Cons[Math.floor(this.RNG.random() * this.start1Cons.length)]; }
+
+    if (syllableIdx === 1) {
+      /* */if (rand < 0.01) { syllable = syllable + this.start3Cons[Math.floor(this.RNG.random() * this.start3Cons.length)]; }
+      else if (rand < 0.10) { syllable = syllable + this.start2Cons[Math.floor(this.RNG.random() * this.start2Cons.length)]; }
+      else /*            */ { syllable = syllable + this.start1Cons[Math.floor(this.RNG.random() * this.start1Cons.length)]; }
+    }
 
     rand = this.RNG.random();
     syllable = syllable + this.vowel[Math.floor(this.RNG.random() * this.vowel.length)];
@@ -40,12 +42,12 @@ class WordGen {
   createWord() {
     let word = '';
     let rand = this.RNG.random();
-    word = word + this.createSyllable();
-
     let totalSyllables = 1;
-    while (rand < 0.4 / Math.sqrt(totalSyllables)) {
+    word = word + this.createSyllable(totalSyllables);
+
+    while (rand < 0.45 / Math.sqrt(totalSyllables)) {
       rand = this.RNG.random() ;
-      word = word + this.createSyllable();
+      word = word + this.createSyllable(totalSyllables);
       rand = this.RNG.random() ;
       totalSyllables++;
     }
