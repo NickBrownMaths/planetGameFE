@@ -24,7 +24,7 @@ function DisplayWindows(props) {
         displayBiome={props.displayBiome}
         displayElevation={props.displayElevation}
         displayOnshore={props.displayOnshore}
-        localResources={props.localResources}
+        localMinerals={props.localMinerals}
         />
     </div>
   )

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours, applyCosmosResources } from './Utils/planetCreation.js'
+import { generatePlanet, elevationColours, naturalColours, biomeColours, onshoreColours, generatePlanetResources } from './Utils/planetCreation.js'
 
 import ControlBar from './Controls/ControlBar';
 import DisplayWindows from './Displays/DisplayWindows';
@@ -30,7 +30,7 @@ function App() {
   const [planetBiomes, setPlanetBiomes] = useState([0, 0]);
   const [planetElevation, setPlanetElevation] = useState([0, 0]);
   const [planetOnshoreDist, setPlanetOnshoreDist] = useState([0, 0]);
-  const [planetResources, setPlanetResources] = useState([0, 0]);
+  const [planetResources, setPlanetResources] = useState({minerals: [0, 0], plants:[0, 0], animals:[0 ,0]});
 
 
   const [displayBiome, setDisplayBiome] = useState('');
@@ -75,7 +75,7 @@ function App() {
         setPlanetElevation(planet[3]);
         setPlanetOnshoreDist(planet[4]);
         setPlanetMapDisplayType('natural');
-        setPlanetResources(applyCosmosResources(planetSeed, planet[2], cosmosMaterials));
+        setPlanetResources(generatePlanetResources(planetSeed, planet[2], cosmosMaterials));
       }
     }
   }, [planet]);
@@ -119,7 +119,9 @@ function App() {
         displayBiome={displayBiome}
         displayElevation={displayElevation}
         displayOnshore={displayOnshore}
-        localResources={planetResources[lookingAt]}
+        localMinerals={planetResources.minerals[lookingAt]}
+        //localPlants={planetResources.plants[lookingAt]}
+        //localAnimals={planetResources.animals[lookingAt]}
         reticlevertexdata={reticleVertexData}
         reticlecolourdata={reticleColourData}
       />

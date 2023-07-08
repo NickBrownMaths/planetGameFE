@@ -4,14 +4,14 @@ function MineralList(props) {
 
   let text = 'This Region contains:'
 
-  if (props.localResources.length > 0) {
+  if (props.localMinerals.length > 0) {
     return (
       <>
         {text}
         <ul>
           {
-            props.localResources.map((resource, index) => (
-              <li key={index}> {generateMaterialBearingList(resource)} </li>
+            props.localMinerals.map((mineral, index) => (
+              <li key={index}> {generateMaterialBearingList(mineral)} </li>
             ))
           }
         </ul >

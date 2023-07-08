@@ -88,7 +88,7 @@ export function floodFill(start, nbrMap, biomeMap, depth, newBiome, oldBiome) {
     biomeMap[start] = newBiome;
     if (depth > 0) {
       for (let i = 0; i < 3; i++) {
-        if (typeof(nbrMap[start]) !== 'undefined') {
+        if (typeof (nbrMap[start]) !== 'undefined') {
           let next = nbrMap[start][i];
           floodFill(next, nbrMap, biomeMap, depth - 1, newBiome, oldBiome);
         }
@@ -572,7 +572,7 @@ export function generatePlanet(seed, n) {
       }
     }
   }
-  
+
   // Hills
   let numHills = Math.floor(n ** 2.5);
   for (let i = 0; i < numHills; i++) {
@@ -838,7 +838,7 @@ export function generatePlanet(seed, n) {
   return [interpvertices, globalNbrs, globalBiome, globalElevation, globalOnshoreDistance];
 }
 
-export function applyCosmosResources(seed, globalBiome, cosmosMats) {
+export function generatePlanetResources(seed, globalBiome, cosmosMats) {
   // Create planetMaterials from cosmosMaterials
   let RNG = new MersenneTwister(seed);
 
@@ -895,8 +895,10 @@ export function applyCosmosResources(seed, globalBiome, cosmosMats) {
   }
 
 
-
-  return globalMinerals;
+  let globalResources = {}
+  globalResources.minerals = globalMinerals;
+  
+  return globalResources;
 }
 
 export function whatCellAmILookingAt(rotation, vertices) {

@@ -21,7 +21,7 @@ function DataWindow(props) {
         {text}
         <br />
         <br />
-        <MineralList localResources={props.localResources}/>
+        <MineralList localMinerals={props.localMinerals}/>
       </div>
     </div>
   )
