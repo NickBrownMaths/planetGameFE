@@ -26,6 +26,7 @@ function DisplayWindows(props) {
         displayOnshore={props.displayOnshore}
         localMinerals={props.localMinerals}
         localPlants={props.localPlants}
+        localAnimals={props.localAnimals}
         />
     </div>
   )

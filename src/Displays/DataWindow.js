@@ -1,5 +1,5 @@
 import MineralList from './MineralList';
-import PlantList from './PlantList';
+import LifeList from './LifeList';
 
 function DataWindow(props) {
   let displaySpeed = Math.log2(props.speed);
@@ -23,8 +23,10 @@ function DataWindow(props) {
         <br />
         <br />
         <MineralList localMinerals={props.localMinerals}/>
-        <PlantList localPlants={props.localPlants}/>
-        <PlantList localPlants={props.localPlants}/>
+        <LifeList life={props.localPlants} label="Plants"/>
+        <LifeList life={props.localAnimals} label="Animals"/>
+        <br />
+        <br />
       </div>
     </div>
   )

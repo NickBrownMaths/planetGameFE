@@ -1,5 +1,5 @@
 import MersenneTwister from "mersenne-twister";
-import { LIFE, generatePlants } from "./resources";
+import { LIFE, generatePlants, generateAnimals } from "./resources";
 import { camelize } from "./WordGen";
 
 export function generateIcosahedron() {
@@ -996,6 +996,137 @@ export function generatePlanetResources(seed, globalBiome, cosmosMats) {
   globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.VEGETABLE, RNG.random_int(), 5));
   globalPlantsList.oasis.push(...generatePlants(LIFE.PLANT.FLORAL, RNG.random_int(), 5));
 
+  // Create global animals list
+  let globalAnimalsList = {}
+  globalAnimalsList.polar = [];
+  globalAnimalsList.polar.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.tundra = [];
+  globalAnimalsList.tundra.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.tundra.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 5));
+  globalAnimalsList.tundra.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 5));
+  globalAnimalsList.borealForest = [];
+  globalAnimalsList.borealForest.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.borealForest.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.borealForest.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 15));
+  globalAnimalsList.temperateForest = [];
+  globalAnimalsList.temperateForest.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 15));
+  globalAnimalsList.temperateForest.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 15));
+  globalAnimalsList.temperateForest.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 20));
+  globalAnimalsList.grassland = [];
+  globalAnimalsList.grassland.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.grassland.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.grassland.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 20));
+  globalAnimalsList.grassland.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+  globalAnimalsList.desert = [];
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 5));
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 10));
+  globalAnimalsList.savanna = [];
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 15));
+  globalAnimalsList.desert.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 10));
+  globalAnimalsList.tropicalRainforest = [];
+  globalAnimalsList.tropicalRainforest.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 20));
+  globalAnimalsList.tropicalRainforest.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 20));
+  globalAnimalsList.tropicalRainforest.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 30));
+  globalAnimalsList.tropicalRainforest.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 10));
+  globalAnimalsList.nival = globalAnimalsList.polar;
+  globalAnimalsList.alpine = globalAnimalsList.tundra;
+  globalAnimalsList.montane = globalAnimalsList.borealForest;
+  globalAnimalsList.volcano = [];
+  globalAnimalsList.volcano.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 5));
+  globalAnimalsList.volcano.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 5));
+  globalAnimalsList.volcano.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+  globalAnimalsList.encinal = globalAnimalsList.temperateForest;
+  globalAnimalsList.desertGrassland = globalAnimalsList.savanna;
+  globalAnimalsList.cloudForest = globalAnimalsList.tropicalRainforest;
+  globalAnimalsList.ocean = [];
+  globalAnimalsList.ocean.push(...generateAnimals(LIFE.ANIMAL.FISH, RNG.random_int(), 60));
+  globalAnimalsList.ocean.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.ocean.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.ocean.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+  globalAnimalsList.ocean.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.ocean.push(...generateAnimals(LIFE.ANIMAL.JELLY, RNG.random_int(), 5));
+  globalAnimalsList.shallows = globalAnimalsList.ocean;
+  globalAnimalsList.oceanTrench = globalAnimalsList.ocean;
+  globalAnimalsList.coral = globalAnimalsList.ocean;
+  globalAnimalsList.tropicalIslet = globalAnimalsList.tropicalRainforest;
+  globalAnimalsList.islet = globalAnimalsList.temperateForest;
+  globalAnimalsList.iceberg = globalAnimalsList.polar;
+  globalAnimalsList.tropicalBeach = globalAnimalsList.ocean;
+  globalAnimalsList.beach = globalAnimalsList.ocean;
+  globalAnimalsList.coldBeach = globalAnimalsList.tundra;
+  globalAnimalsList.tropicalCliff = globalAnimalsList.tropicalRainforest;
+  globalAnimalsList.cliff = globalAnimalsList.temperateForest;
+  globalAnimalsList.fjord = globalAnimalsList.borealForest;
+  globalAnimalsList.temperateRainforest = globalAnimalsList.temperateForest;
+  globalAnimalsList.chaparral = [];
+  globalAnimalsList.chaparral.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.chaparral.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.chaparral.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.chaparral.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 10));
+  globalAnimalsList.saltMarsh = [];
+  globalAnimalsList.saltMarsh.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.saltMarsh.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 15));
+  globalAnimalsList.saltMarsh.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 15));
+  globalAnimalsList.saltMarsh.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+  globalAnimalsList.mangrove = [];
+  globalAnimalsList.mangrove.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.mangrove.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 15));
+  globalAnimalsList.mangrove.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 15));
+  globalAnimalsList.mangrove.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+  globalAnimalsList.glacier = globalAnimalsList.borealForest;
+  globalAnimalsList.river = globalAnimalsList.temperateForest;
+  globalAnimalsList.river.push(...generateAnimals(LIFE.ANIMAL.FISH, RNG.random_int(), 20));
+  globalAnimalsList.river.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.river.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 20));
+  globalAnimalsList.river.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.river.push(...generateAnimals(LIFE.ANIMAL.JELLY, RNG.random_int(), 5));
+  globalAnimalsList.tropicalRiver = globalAnimalsList.tropicalRainforest;
+  globalAnimalsList.tropicalRiver.push(...generateAnimals(LIFE.ANIMAL.FISH, RNG.random_int(), 25));
+  globalAnimalsList.tropicalRiver.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 15));
+  globalAnimalsList.tropicalRiver.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 30));
+  globalAnimalsList.tropicalRiver.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.tropicalRiver.push(...generateAnimals(LIFE.ANIMAL.JELLY, RNG.random_int(), 5));
+  globalAnimalsList.riverFjord = globalAnimalsList.borealForest;
+  globalAnimalsList.waterfall = globalAnimalsList.river;
+  globalAnimalsList.tropicalWaterfall = globalAnimalsList.tropicalRiver;
+  globalAnimalsList.glacierValley = globalAnimalsList.borealForest;
+  globalAnimalsList.riverValley = globalAnimalsList.river;
+  globalAnimalsList.tropicalRiverValley = globalAnimalsList.tropicalRiver;
+  globalAnimalsList.delta = globalAnimalsList.river;
+  globalAnimalsList.tropicalDelta = globalAnimalsList.tropicalRiver;
+  globalAnimalsList.lake = globalAnimalsList.river;
+  globalAnimalsList.tropicalLake = globalAnimalsList.tropicalRiver;
+  globalAnimalsList.tropicalSwamp = [];
+  globalAnimalsList.tropicalSwamp.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.tropicalSwamp.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 15));
+  globalAnimalsList.tropicalSwamp.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 40));
+  globalAnimalsList.tropicalSwamp.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+  globalAnimalsList.swamp = [];
+  globalAnimalsList.swamp.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 10));
+  globalAnimalsList.swamp.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.swamp.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.marsh = [];
+  globalAnimalsList.marsh.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.marsh.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 10));
+  globalAnimalsList.marsh.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 15));
+  globalAnimalsList.bog = [];
+  globalAnimalsList.bog.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 5));
+  globalAnimalsList.bog.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.fen = [];
+  globalAnimalsList.fen.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.fen.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 5));
+  globalAnimalsList.fen.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.oasis = [];
+  globalAnimalsList.oasis.push(...generateAnimals(LIFE.ANIMAL.BEAST.FURRY, RNG.random_int(), 5));
+  globalAnimalsList.oasis.push(...generateAnimals(LIFE.ANIMAL.BIRD, RNG.random_int(), 5));
+  globalAnimalsList.oasis.push(...generateAnimals(LIFE.ANIMAL.BUG, RNG.random_int(), 10));
+  globalAnimalsList.oasis.push(...generateAnimals(LIFE.ANIMAL.BEAST.SCALED, RNG.random_int(), 5));
+
+
   // Assign resources to regions
   let globalMinerals = [];
   let globalPlants = [];
@@ -1043,6 +1174,14 @@ export function generatePlanetResources(seed, globalBiome, cosmosMats) {
       else { globalPlants[i].push(globalPlantsList[key][rand]); }
     }
     
+    globalAnimals.push([]);
+    let numAnimals = Math.floor(globalAnimalsList[key].length / 5);
+    for (let j = 0; j < numAnimals; j++) {
+      let rand = Math.floor(RNG.random() * globalAnimalsList[key].length);
+      if (globalAnimals[i].filter(e => e.NAME === globalAnimalsList[key][rand].NAME).length > 0) { }
+      else { globalAnimals[i].push(globalAnimalsList[key][rand]); }
+    }
+
 
   }
 

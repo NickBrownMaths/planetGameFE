@@ -110,6 +110,7 @@ export const LIFE = {
     },
     FISH: "fish",
     BUG: "bug",
+    JELLY: "jelly",
   },
   PLANT: {
     TREE: {
@@ -125,6 +126,39 @@ export const LIFE = {
     SEAGRASS: "seagrass",
     SEAWEED: "seaweed",
   }
+}
+
+export function generateAnimal(type, seed) {
+  let RNG = new MersenneTwister(seed);
+  let rand = RNG.random();
+
+  let animal = {};
+  animal.TYPE = type;
+
+  let WG = new WordGen(RNG.random_int());
+  animal.NAME = WG.createWord();
+
+  /* */if (type === LIFE.ANIMAL.BIRD) {}
+  else if (type === LIFE.ANIMAL.BEAST.FURRY) {}
+  else if (type === LIFE.ANIMAL.BEAST.SCALED) {}
+  else if (type === LIFE.ANIMAL.FISH) {}
+  else if (type === LIFE.ANIMAL.BUG) {}
+  else if (type === LIFE.ANIMAL.JELLY) {}
+  
+  return animal;
+} 
+
+export function generateAnimals(type, seed, number) {
+  let animals = [];
+  let RNG = new MersenneTwister(seed);
+  let rand;
+
+  for (let i = 0; i < number; i++) {
+    rand = RNG.random_int();
+    animals.push(generateAnimal(type, rand));
+  }
+
+  return animals;
 }
 
 export function generatePlant(type, seed) {

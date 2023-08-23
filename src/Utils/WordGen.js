@@ -12,12 +12,12 @@ class WordGen {
   }
 
   vowel = ['a', 'e', 'i', 'o', 'u', 'ai', 'ee', 'eu', 'ia', 'io', 'oi', 'oo', 'ou',];
-  start1Cons = ['', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
-  start2Cons = ['pl', 'pr', 'bl', 'br', 'tr', 'dr', 'kl', 'kr', 'gl', 'gr', 'fl', 'fr', 'thr', 'shr', 'sk', 'sl', 'sm', 'sn', 'sp', 'st', 'sw', 'tw', 'dw', 'kw', 'gw',];
-  start3Cons = ['skr', 'skw', 'spl', 'spr', 'str',];
-  end1Cons = ['', '\'', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
+  start1Cons = ['', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p',  'r', 's', 't', 'v', 'w', 'y', 'z'];
+  start2Cons = ['x', 'pl', 'pr', 'bl', 'br', 'tr', 'dr', 'kl', 'kr', 'gl', 'gr', 'fl', 'fr', 'thr', 'shr', 'sk', 'sl', 'sm', 'sn', 'sp', 'st', 'sw', 'tw', 'dw', 'kw', 'gw',];
+  start3Cons = ['q', 'skr', 'skw', 'spl', 'spr', 'str',];
+  end1Cons = ['', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
   end2Cons = ['ft', 'kt', 'lt', 'ld', 'lk', 'lp', 'lb', 'lf', 'lv', 'lch', 'lge', 'lm', 'ls', 'mp', 'mf', 'nt', 'nd', 'nch', 'nge', 'ns', 'nz', 'ng', 'ps', 'pt', 'sk', 'sp', 'st', 'ps', 'ts', 'ks', 'bs', 'ds', 'gs', 'fs', 'ths', 'vs', 'ngs', 'ls', 'pt', 'kt', 'st', 'sht', 'ft', 'cht',];
-  end3Cons = ['mpt', 'ngth'];
+  end3Cons = ['\'', 'mpt', 'ngth'];
 
   createSyllable(syllableIdx) {
     let syllable = '';
