@@ -12,7 +12,7 @@ function MineralList(props) {
         <ul>
           {
             props.localMinerals.map((mineral, index) => (
-              <li key={index}> {generateMaterialBearingList(mineral)} <ControlButton buttonType ='infoButton' text = '?' onClick={() => {}}/> </li>
+              <li key={index}> {generateMaterialBearingList(mineral)} <ControlButton buttonType ='infoButton' text = '?' onClick={() => {console.log(mineral)}}/> </li>
             ))
           }
         </ul >

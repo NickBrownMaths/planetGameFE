@@ -1,5 +1,6 @@
 import MersenneTwister from "mersenne-twister";
-import { LIFE, generatePlants, generateAnimals } from "./resources";
+import { generatePlants, generateAnimals } from "./resources";
+import { LIFE } from "./enums";
 import { camelize } from "./WordGen";
 
 export function generateIcosahedron() {
@@ -1191,16 +1192,6 @@ export function generatePlanetResources(seed, globalBiome, cosmosMats) {
   globalResources.plants = globalPlants;
   globalResources.animals = globalAnimals;
   return globalResources;
-}
-
-export function generateLocalPlants(seed, globalResources, biome, lookingAt) {
-  
-
-
-
-
-
-
 }
 
 export function whatCellAmILookingAt(rotation, vertices) {
